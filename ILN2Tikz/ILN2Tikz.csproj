@@ -53,7 +53,9 @@
     <Compile Include="Generator\Elements\TikzPicture.cs" />
     <Compile Include="Generator\TikzWriter.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="ILNumerics_deploy\ilnumerics.lic" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="ILNumerics_deploy\ILNImports1.targets" />
     <None Include="ILNumerics_deploy\ILNImports2.targets" />
@@ -63,9 +65,6 @@
     <PackageReference Include="EMG.External.ILNumerics">
       <Version>4.14.6370</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ILNumerics_deploy\ilnumerics.lic" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="ILNumerics_deploy\ILNImports1.targets" Condition="$(ILNLicCompile) != 'true'" />
