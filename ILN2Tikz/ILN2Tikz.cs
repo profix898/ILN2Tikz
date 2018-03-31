@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using ILN2Tikz.Generator;
-using ILN2Tikz.Generator.Plots;
 using ILNumerics.Drawing;
-using ILNumerics.Drawing.Plotting;
 
 namespace ILN2Tikz
 {
@@ -32,34 +28,20 @@ namespace ILN2Tikz
 
         public static void Export(ILScene scene, TextWriter writer)
         {
-            // Bind elements (maps ILNumerics to TikzElements)
-            IList<ITikzElement> elements = new List<ITikzElement>();
-            Bind(scene, elements);
+            // Obtain TIKZ picture from ILScene
+            var tikzPicture = Bind(scene);
 
             // Write to TextWriter
             var tikzWriter = new TikzWriter(writer);
-            tikzWriter.Write(elements);
+            tikzWriter.Write(tikzPicture);
         }
 
-        public static void Bind(ILScene scene, IList<ITikzElement> elements)
+        public static TikzPicture Bind(ILScene scene)
         {
-            Bind<ILPlotCube, TikzAxis>(scene, elements);
-            //Bind<ILLinePlot, TikzPlot>(scene, elements);
-            //Bind<ILSurface, TikzPlot3>(scene, elements);
-        }
+            var tikzPicture = new TikzPicture();
+            tikzPicture.Bind(scene);
 
-        public static void Bind<TNode, TTikz>(ILGroup group, IList<ITikzElement> elements, object tag = null, Predicate<TNode> predicate = null)
-            where TNode : ILNode
-            where TTikz : ITikzElement, IRootBinder, new()
-        {
-            var element = group.First(tag, predicate);
-            if (element == null)
-                return;
-
-            var tikz = new TTikz();
-            tikz.Bind(element);
-
-            elements.Add(tikz);
+            return tikzPicture;
         }
     }
 }
