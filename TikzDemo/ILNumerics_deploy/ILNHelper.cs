@@ -1,5 +1,5 @@
 #pragma warning disable 1591
-namespace ILNumerics_Licensing {
+namespace TikzDemo.ILNumerics_deploy {
     /// <summary>
     /// This type supports ILNumerics infrastructure. Do not edit the code!
     /// </summary>

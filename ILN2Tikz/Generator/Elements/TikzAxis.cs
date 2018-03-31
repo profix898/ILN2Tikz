@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
-using ILN2Tikz.Generator.Plots;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
-namespace ILN2Tikz.Generator
+namespace ILN2Tikz.Generator.Elements
 {
     public class TikzAxis : TikzGroupElementBase, ITikzGroupElement
     {
@@ -52,16 +52,16 @@ namespace ILN2Tikz.Generator
                 yield return $"  height={Size.Height}mm,";
 
                 if (!String.IsNullOrEmpty(Title))
-                    yield return $"  title='{Title}',";
+                    yield return $"  title='{{{Title}}},";
 
-                yield return $"  view={{({ViewAzimuth})}}{{({ViewElevation})}},";
+                yield return FormattableString.Invariant($"  view={{({ViewAzimuth})}}{{({ViewElevation})}},");
 
                 #endregion
 
                 #region XAxis
 
                 if (!String.IsNullOrEmpty(XLabel))
-                    yield return $"  xlabel='{XLabel}',";
+                    yield return $"  xlabel={{{XLabel}}},";
                 switch (XScale)
                 {
                     case AxisScale.Linear:
@@ -73,19 +73,19 @@ namespace ILN2Tikz.Generator
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                yield return $"  xmin={XMin},";
-                yield return $"  xmax={XMax},";
+                yield return FormattableString.Invariant($"  xmin={XMin},");
+                yield return FormattableString.Invariant($"  xmax={XMax},");
                 switch (XTicksMode)
                 {
                     case TicksModeEnum.None:
-                        yield return @"  xticks=\empty,";
+                        //yield return @"  xticks=\empty,";
                         break;
                     case TicksModeEnum.Coordinate:
                         yield return "  xticks=data,";
                         break;
                     case TicksModeEnum.Custom:
                         if (XTicks != null)
-                            yield return $"  xticks={String.Join(",", XTicks.Select(x => x.ToString("F")))}";
+                            yield return $"  xticks={String.Join(",", XTicks.Select(x => x.ToString("F", CultureInfo.InvariantCulture)))}";
                         break;
                     case TicksModeEnum.Auto:
                         break;
@@ -118,7 +118,7 @@ namespace ILN2Tikz.Generator
                 #region YAxis
 
                 if (!String.IsNullOrEmpty(YLabel))
-                    yield return $"  ylabel='{YLabel}',";
+                    yield return $"  ylabel={{{YLabel}}},";
                 switch (YScale)
                 {
                     case AxisScale.Linear:
@@ -130,19 +130,19 @@ namespace ILN2Tikz.Generator
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                yield return $"  ymin={YMin},";
-                yield return $"  ymax={YMax},";
+                yield return FormattableString.Invariant($"  ymin={YMin},");
+                yield return FormattableString.Invariant($"  ymax={YMax},");
                 switch (YTicksMode)
                 {
                     case TicksModeEnum.None:
-                        yield return @"  yticks=\empty,";
+                        //yield return @"  yticks=\empty,";
                         break;
                     case TicksModeEnum.Coordinate:
                         yield return "  yticks=data,";
                         break;
                     case TicksModeEnum.Custom:
                         if (YTicks != null)
-                            yield return $"  yticks={String.Join(",", YTicks.Select(x => x.ToString("F")))}";
+                            yield return $"  yticks={String.Join(",", YTicks.Select(x => x.ToString("F", CultureInfo.InvariantCulture)))}";
                         break;
                     case TicksModeEnum.Auto:
                         break;
@@ -177,7 +177,7 @@ namespace ILN2Tikz.Generator
                 if (!TwoDMode)
                 {
                     if (!String.IsNullOrEmpty(ZLabel))
-                        yield return $"  zlabel='{ZLabel}',";
+                        yield return $"  zlabel={{{ZLabel}}},";
                     switch (ZScale)
                     {
                         case AxisScale.Linear:
@@ -190,19 +190,19 @@ namespace ILN2Tikz.Generator
                             throw new ArgumentOutOfRangeException();
                     }
 
-                    yield return $"  zmin={ZMin},";
-                    yield return $"  zmax={ZMax},";
+                    yield return FormattableString.Invariant($"  zmin={ZMin},");
+                    yield return FormattableString.Invariant($"  zmax={ZMax},");
                     switch (ZTicksMode)
                     {
                         case TicksModeEnum.None:
-                            yield return @"  zticks=\empty,";
+                            //yield return @"  zticks=\empty,";
                             break;
                         case TicksModeEnum.Coordinate:
                             yield return "  zticks=data,";
                             break;
                         case TicksModeEnum.Custom:
                             if (ZTicks != null)
-                                yield return $"  zticks={String.Join(",", ZTicks.Select(x => x.ToString("F")))}";
+                                yield return $"  zticks={String.Join(",", ZTicks.Select(x => x.ToString("F", CultureInfo.InvariantCulture)))}";
                             break;
                         case TicksModeEnum.Auto:
                             break;
@@ -407,12 +407,18 @@ namespace ILN2Tikz.Generator
             Title = title?.Label?.Text ?? String.Empty;
             Size = new Rectangle(0, 0, 150, 100); // TODO: Aspect ratio
             TwoDMode = plotCube.TwoDMode;
-            
+            if (!TwoDMode)
+            {
+                // Default orientation for 3D view
+                ViewAzimuth = 60;
+                ViewElevation = 60;
+            }
+
             // XAxis
             XLabel = plotCube.Axes.XAxis.Label.Text;
             XScale = plotCube.ScaleModes.XAxisScale;
-            XMin = plotCube.Axes.XAxis.Min ?? 0;
-            XMax = plotCube.Axes.XAxis.Max ?? 1; // TODO
+            XMin = plotCube.Axes.XAxis.Min ?? plotCube.Plots.Limits.XMin;
+            XMax = plotCube.Axes.XAxis.Max ?? plotCube.Plots.Limits.XMax;
             XTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.XAxis.Ticks.TickLength);
             XMajorTicks = plotCube.Axes.XAxis.Ticks.Visible;
             XMinorTicks = false;
@@ -422,8 +428,8 @@ namespace ILN2Tikz.Generator
             // YAxis
             YLabel = plotCube.Axes.YAxis.Label.Text;
             YScale = plotCube.ScaleModes.YAxisScale;
-            YMin = plotCube.Axes.YAxis.Min ?? 0;
-            YMax = plotCube.Axes.YAxis.Max ?? 1; // TODO
+            YMin = plotCube.Axes.YAxis.Min ?? plotCube.Plots.Limits.YMin;
+            YMax = plotCube.Axes.YAxis.Max ?? plotCube.Plots.Limits.YMax;
             YTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.YAxis.Ticks.TickLength);
             YMajorTicks = plotCube.Axes.YAxis.Ticks.Visible;
             YMinorTicks = false;
@@ -433,8 +439,8 @@ namespace ILN2Tikz.Generator
             // ZAxis
             ZLabel = plotCube.Axes.ZAxis.Label.Text;
             ZScale = plotCube.ScaleModes.ZAxisScale;
-            ZMin = plotCube.Axes.ZAxis.Min ?? 0;
-            ZMax = plotCube.Axes.ZAxis.Max ?? 1; // TODO
+            ZMin = plotCube.Axes.ZAxis.Min ?? plotCube.Plots.Limits.ZMin;
+            ZMax = plotCube.Axes.ZAxis.Max ?? plotCube.Plots.Limits.ZMax;
             ZTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.ZAxis.Ticks.TickLength);
             ZMajorTicks = plotCube.Axes.ZAxis.Ticks.Visible;
             ZMinorTicks = false;
@@ -442,9 +448,9 @@ namespace ILN2Tikz.Generator
             ZMinorGrid = plotCube.Axes.ZAxis.GridMinor.Visible;
 
             // TODO: Legend
-
-            // Map child elements
-            this.BindElement<TikzPlot>(plotCube.First<ILLinePlot>());
+            
+            // Map plots (ILLinePlot, ILSurface, etc.)
+            this.BindPlots(plotCube);
         }
 
         #region Helpers

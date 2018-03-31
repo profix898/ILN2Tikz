@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using ILN2Tikz.Generator;
+using ILN2Tikz.Generator.Elements;
 using ILNumerics.Drawing;
 
 namespace ILN2Tikz
