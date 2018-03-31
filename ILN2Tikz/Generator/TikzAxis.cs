@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using ILN2Tikz.Generator.Plots;
 using ILNumerics.Drawing;
+using ILNumerics.Drawing.Plotting;
 
 namespace ILN2Tikz.Generator
 {
-    public class TikzAxis : TikzElementBase, IRootBinder
+    public class TikzAxis : TikzGroupElementBase, ITikzGroupElement
     {
         private float[] xTicks;
         private float[] yTicks;
@@ -46,44 +48,44 @@ namespace ILN2Tikz.Generator
             {
                 #region Global
 
-                yield return $"width={Size.Width}cm,";
-                yield return $"height={Size.Height}cm,";
+                yield return $"  width={Size.Width}mm,";
+                yield return $"  height={Size.Height}mm,";
 
                 if (!String.IsNullOrEmpty(Title))
-                    yield return $"title={Title},";
+                    yield return $"  title='{Title}',";
 
-                yield return $"view={{({ViewAzimuth})}}{{({ViewElevation})}},";
+                yield return $"  view={{({ViewAzimuth})}}{{({ViewElevation})}},";
 
                 #endregion
 
                 #region XAxis
 
                 if (!String.IsNullOrEmpty(XLabel))
-                    yield return $"xlabel={XLabel},";
+                    yield return $"  xlabel='{XLabel}',";
                 switch (XScale)
                 {
-                    case AxisScaleEnum.Linear:
-                        yield return "xmode=normal,";
+                    case AxisScale.Linear:
+                        yield return "  xmode=normal,";
                         break;
-                    case AxisScaleEnum.Logarithmic:
-                        yield return "xmode=log,";
+                    case AxisScale.Logarithmic:
+                        yield return "  xmode=log,";
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                yield return $"xmin={XMin},";
-                yield return $"xmax={XMax},";
+                yield return $"  xmin={XMin},";
+                yield return $"  xmax={XMax},";
                 switch (XTicksMode)
                 {
                     case TicksModeEnum.None:
-                        yield return @"xticks=\empty,";
+                        yield return @"  xticks=\empty,";
                         break;
                     case TicksModeEnum.Coordinate:
-                        yield return "xticks=data,";
+                        yield return "  xticks=data,";
                         break;
                     case TicksModeEnum.Custom:
                         if (XTicks != null)
-                            yield return $"xticks={String.Join(",", XTicks.Select(x => x.ToString("F")))}";
+                            yield return $"  xticks={String.Join(",", XTicks.Select(x => x.ToString("F")))}";
                         break;
                     case TicksModeEnum.Auto:
                         break;
@@ -93,54 +95,54 @@ namespace ILN2Tikz.Generator
                 switch (XTicksAlign)
                 {
                     case TicksAlignEnum.Inside:
-                        yield return "xtick align=inside,";
+                        yield return "  xtick align=inside,";
                         break;
                     case TicksAlignEnum.Center:
-                        yield return "xtick align=center,";
+                        yield return "  xtick align=center,";
                         break;
                     case TicksAlignEnum.Outside:
-                        yield return "xtick align=outside,";
+                        yield return "  xtick align=outside,";
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                yield return $"xmajorticks={(XMajorTicks ? "true" : "false")},";
-                yield return $"xminorticks={(XMinorTicks ? "true" : "false")},";
+                yield return $"  xmajorticks={(XMajorTicks ? "true" : "false")},";
+                yield return $"  xminorticks={(XMinorTicks ? "true" : "false")},";
                 if (XMajorGrid)
-                    yield return "xmajorgrids,";
+                    yield return "  xmajorgrids,";
                 if (XMinorGrid)
-                    yield return "xminorgrids,";
+                    yield return "  xminorgrids,";
 
                 #endregion
 
                 #region YAxis
 
                 if (!String.IsNullOrEmpty(YLabel))
-                    yield return $"ylabel={YLabel},";
+                    yield return $"  ylabel='{YLabel}',";
                 switch (YScale)
                 {
-                    case AxisScaleEnum.Linear:
-                        yield return "ymode=normal,";
+                    case AxisScale.Linear:
+                        yield return "  ymode=normal,";
                         break;
-                    case AxisScaleEnum.Logarithmic:
-                        yield return "ymode=log,";
+                    case AxisScale.Logarithmic:
+                        yield return "  ymode=log,";
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                yield return $"ymin={YMin},";
-                yield return $"ymax={YMax},";
+                yield return $"  ymin={YMin},";
+                yield return $"  ymax={YMax},";
                 switch (YTicksMode)
                 {
                     case TicksModeEnum.None:
-                        yield return @"yticks=\empty,";
+                        yield return @"  yticks=\empty,";
                         break;
                     case TicksModeEnum.Coordinate:
-                        yield return "yticks=data,";
+                        yield return "  yticks=data,";
                         break;
                     case TicksModeEnum.Custom:
                         if (YTicks != null)
-                            yield return $"yticks={String.Join(",", YTicks.Select(x => x.ToString("F")))}";
+                            yield return $"  yticks={String.Join(",", YTicks.Select(x => x.ToString("F")))}";
                         break;
                     case TicksModeEnum.Auto:
                         break;
@@ -150,82 +152,90 @@ namespace ILN2Tikz.Generator
                 switch (YTicksAlign)
                 {
                     case TicksAlignEnum.Inside:
-                        yield return "ytick align=inside,";
+                        yield return "  ytick align=inside,";
                         break;
                     case TicksAlignEnum.Center:
-                        yield return "ytick align=center,";
+                        yield return "  ytick align=center,";
                         break;
                     case TicksAlignEnum.Outside:
-                        yield return "ytick align=outside,";
+                        yield return "  ytick align=outside,";
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                yield return $"ymajorticks={(YMajorTicks ? "true" : "false")},";
-                yield return $"yminorticks={(YMinorTicks ? "true" : "false")},";
+                yield return $"  ymajorticks={(YMajorTicks ? "true" : "false")},";
+                yield return $"  yminorticks={(YMinorTicks ? "true" : "false")},";
                 if (YMajorGrid)
-                    yield return "ymajorgrids,";
+                    yield return "  ymajorgrids,";
                 if (YMinorGrid)
-                    yield return "yminorgrids,";
+                    yield return "  yminorgrids,";
 
                 #endregion
 
                 #region ZAxis
 
-                if (!String.IsNullOrEmpty(ZLabel))
-                    yield return $"xlabel={ZLabel},";
-                switch (ZScale)
+                if (!TwoDMode)
                 {
-                    case AxisScaleEnum.Linear:
-                        yield return "zmode=normal,";
-                        break;
-                    case AxisScaleEnum.Logarithmic:
-                        yield return "zmode=log,";
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    if (!String.IsNullOrEmpty(ZLabel))
+                        yield return $"  zlabel='{ZLabel}',";
+                    switch (ZScale)
+                    {
+                        case AxisScale.Linear:
+                            yield return "  zmode=normal,";
+                            break;
+                        case AxisScale.Logarithmic:
+                            yield return "  zmode=log,";
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    yield return $"  zmin={ZMin},";
+                    yield return $"  zmax={ZMax},";
+                    switch (ZTicksMode)
+                    {
+                        case TicksModeEnum.None:
+                            yield return @"  zticks=\empty,";
+                            break;
+                        case TicksModeEnum.Coordinate:
+                            yield return "  zticks=data,";
+                            break;
+                        case TicksModeEnum.Custom:
+                            if (ZTicks != null)
+                                yield return $"  zticks={String.Join(",", ZTicks.Select(x => x.ToString("F")))}";
+                            break;
+                        case TicksModeEnum.Auto:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    switch (ZTicksAlign)
+                    {
+                        case TicksAlignEnum.Inside:
+                            yield return "  ztick align=inside,";
+                            break;
+                        case TicksAlignEnum.Center:
+                            yield return "  ztick align=center,";
+                            break;
+                        case TicksAlignEnum.Outside:
+                            yield return "  ztick align=outside,";
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    yield return $"  zmajorticks={(ZMajorTicks ? "true" : "false")},";
+                    yield return $"  zminorticks={(ZMinorTicks ? "true" : "false")},";
+                    if (ZMajorGrid)
+                        yield return "  zmajorgrids,";
+                    if (ZMinorGrid)
+                        yield return "  zminorgrids,";
                 }
-                yield return $"zmin={ZMin},";
-                yield return $"zmax={ZMax},";
-                switch (ZTicksMode)
-                {
-                    case TicksModeEnum.None:
-                        yield return @"zticks=\empty,";
-                        break;
-                    case TicksModeEnum.Coordinate:
-                        yield return "zticks=data,";
-                        break;
-                    case TicksModeEnum.Custom:
-                        if (ZTicks != null)
-                            yield return $"zticks={String.Join(",", ZTicks.Select(x => x.ToString("F")))}";
-                        break;
-                    case TicksModeEnum.Auto:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-                switch (ZTicksAlign)
-                {
-                    case TicksAlignEnum.Inside:
-                        yield return "ztick align=inside,";
-                        break;
-                    case TicksAlignEnum.Center:
-                        yield return "ztick align=center,";
-                        break;
-                    case TicksAlignEnum.Outside:
-                        yield return "ztick align=outside,";
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-                yield return $"zmajorticks={(ZMajorTicks ? "true" : "false")},";
-                yield return $"zminorticks={(ZMinorTicks ? "true" : "false")},";
-                if (ZMajorGrid)
-                    yield return "zmajorgrids,";
-                if (ZMinorGrid)
-                    yield return "zminorgrids,";
 
                 #endregion
+
+                yield return "]";
 
                 // Return child elements
                 foreach (var element in base.Content)
@@ -235,7 +245,7 @@ namespace ILN2Tikz.Generator
 
         public override string PostTag
         {
-            get { return @"]"; }
+            get { return @"\end{axis}"; }
         }
 
         #endregion
@@ -249,6 +259,8 @@ namespace ILN2Tikz.Generator
         public float ViewElevation { get; set; }
 
         public Rectangle Size { get; set; }
+
+        public bool TwoDMode { get; set; }
 
         public TicksAlignEnum TicksAlign
         {
@@ -286,7 +298,7 @@ namespace ILN2Tikz.Generator
 
         public string XLabel { get; set; }
 
-        public AxisScaleEnum XScale { get; set; }
+        public AxisScale XScale { get; set; }
 
         public float XMin { get; set; }
 
@@ -320,7 +332,7 @@ namespace ILN2Tikz.Generator
 
         public string YLabel { get; set; }
 
-        public AxisScaleEnum YScale { get; set; }
+        public AxisScale YScale { get; set; }
 
         public float YMin { get; set; }
 
@@ -354,7 +366,7 @@ namespace ILN2Tikz.Generator
 
         public string ZLabel { get; set; }
 
-        public AxisScaleEnum ZScale { get; set; }
+        public AxisScale ZScale { get; set; }
 
         public float ZMin { get; set; }
 
@@ -384,14 +396,70 @@ namespace ILN2Tikz.Generator
 
         #endregion
 
-        /// <summary>
-        /// Binds the specified node.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        public void Bind(ILNode node)
+        public override void Bind(ILGroup group)
         {
-            // TODO: Find ILPlotCube properties and map to Tikz axis properties
-            // TODO: Map children
+            var plotCube = group as ILPlotCube;
+            if (plotCube == null)
+                return;
+
+            // Global
+            var title = group.First<ILTitle>();
+            Title = title?.Label?.Text ?? String.Empty;
+            Size = new Rectangle(0, 0, 150, 100); // TODO: Aspect ratio
+            TwoDMode = plotCube.TwoDMode;
+            
+            // XAxis
+            XLabel = plotCube.Axes.XAxis.Label.Text;
+            XScale = plotCube.ScaleModes.XAxisScale;
+            XMin = plotCube.Axes.XAxis.Min ?? 0;
+            XMax = plotCube.Axes.XAxis.Max ?? 1; // TODO
+            XTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.XAxis.Ticks.TickLength);
+            XMajorTicks = plotCube.Axes.XAxis.Ticks.Visible;
+            XMinorTicks = false;
+            XMajorGrid = plotCube.Axes.XAxis.GridMajor.Visible;
+            XMinorGrid = plotCube.Axes.XAxis.GridMinor.Visible;
+            
+            // YAxis
+            YLabel = plotCube.Axes.YAxis.Label.Text;
+            YScale = plotCube.ScaleModes.YAxisScale;
+            YMin = plotCube.Axes.YAxis.Min ?? 0;
+            YMax = plotCube.Axes.YAxis.Max ?? 1; // TODO
+            YTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.YAxis.Ticks.TickLength);
+            YMajorTicks = plotCube.Axes.YAxis.Ticks.Visible;
+            YMinorTicks = false;
+            YMajorGrid = plotCube.Axes.YAxis.GridMajor.Visible;
+            YMinorGrid = plotCube.Axes.YAxis.GridMinor.Visible;
+            
+            // ZAxis
+            ZLabel = plotCube.Axes.ZAxis.Label.Text;
+            ZScale = plotCube.ScaleModes.ZAxisScale;
+            ZMin = plotCube.Axes.ZAxis.Min ?? 0;
+            ZMax = plotCube.Axes.ZAxis.Max ?? 1; // TODO
+            ZTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.ZAxis.Ticks.TickLength);
+            ZMajorTicks = plotCube.Axes.ZAxis.Ticks.Visible;
+            ZMinorTicks = false;
+            ZMajorGrid = plotCube.Axes.ZAxis.GridMajor.Visible;
+            ZMinorGrid = plotCube.Axes.ZAxis.GridMinor.Visible;
+
+            // TODO: Legend
+
+            // Map child elements
+            this.BindElement<TikzPlot>(plotCube.First<ILLinePlot>());
         }
+
+        #region Helpers
+
+        private TicksAlignEnum TickLengthToTicksAlignEnum(float tickLength)
+        {
+            if (tickLength < 0)
+                return TicksAlignEnum.Inside;
+
+            if (tickLength > 0)
+                return TicksAlignEnum.Outside;
+
+            return TicksAlignEnum.Center;
+        }
+
+        #endregion
     }
 }

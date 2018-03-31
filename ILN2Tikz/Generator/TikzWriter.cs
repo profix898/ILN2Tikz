@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace ILN2Tikz.Generator
 {
@@ -13,45 +11,15 @@ namespace ILN2Tikz.Generator
             this.writer = writer;
         }
 
-        public void Write(params ITikzElement[] elements)
+        public void Write(TikzPicture picture)
         {
-            Write((ICollection<ITikzElement>) elements);
-        }
-
-        public void Write(IEnumerable<ITikzElement> elements)
-        {
-            var container = new TikzElementContainer(elements);
+            writer.WriteLine(picture.PreTag);
 
             // Render Content (line-by-line)
-            foreach (var contentLine in container.Content)
+            foreach (var contentLine in picture.Content)
                 writer.WriteLine(contentLine);
+
+            writer.WriteLine(picture.PostTag);
         }
-
-        #region Nested type: TikzElementContainer
-
-        private class TikzElementContainer : TikzElementBase
-        {
-            #region Overrides of TikzElementBase
-
-            public TikzElementContainer(IEnumerable<ITikzElement> elements)
-            {
-                foreach (var element in elements)
-                    Add(element);
-            }
-
-            public override string PreTag
-            {
-                get { return String.Empty; }
-            }
-
-            public override string PostTag
-            {
-                get { return String.Empty; }
-            }
-
-            #endregion
-        }
-
-        #endregion
     }
 }
