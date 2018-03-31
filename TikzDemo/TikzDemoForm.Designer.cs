@@ -30,13 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TikzDemoForm));
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnExportText = new System.Windows.Forms.Button();
             this.btnExportFile = new System.Windows.Forms.Button();
-            this.textBoxExportPath = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ilPanel = new ILNumerics.Drawing.ILPanel();
             this.textBoxTikz = new System.Windows.Forms.TextBox();
+            this.comboBoxScene = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -57,10 +56,9 @@
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.label1);
+            this.splitContainer.Panel1.Controls.Add(this.comboBoxScene);
             this.splitContainer.Panel1.Controls.Add(this.btnExportText);
             this.splitContainer.Panel1.Controls.Add(this.btnExportFile);
-            this.splitContainer.Panel1.Controls.Add(this.textBoxExportPath);
             this.splitContainer.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // splitContainer.Panel2
@@ -72,19 +70,10 @@
             this.splitContainer.SplitterWidth = 1;
             this.splitContainer.TabIndex = 0;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Export path";
-            // 
             // btnExportText
             // 
             this.btnExportText.AutoSize = true;
-            this.btnExportText.Location = new System.Drawing.Point(492, 4);
+            this.btnExportText.Location = new System.Drawing.Point(264, 5);
             this.btnExportText.Name = "btnExportText";
             this.btnExportText.Size = new System.Drawing.Size(83, 23);
             this.btnExportText.TabIndex = 1;
@@ -95,20 +84,13 @@
             // btnExportFile
             // 
             this.btnExportFile.AutoSize = true;
-            this.btnExportFile.Location = new System.Drawing.Point(408, 4);
+            this.btnExportFile.Location = new System.Drawing.Point(180, 5);
             this.btnExportFile.Name = "btnExportFile";
             this.btnExportFile.Size = new System.Drawing.Size(78, 23);
             this.btnExportFile.TabIndex = 1;
             this.btnExportFile.Text = "Export to File";
             this.btnExportFile.UseVisualStyleBackColor = true;
             this.btnExportFile.Click += new System.EventHandler(this.btnExportFile_Click);
-            // 
-            // textBoxExportPath
-            // 
-            this.textBoxExportPath.Location = new System.Drawing.Point(79, 6);
-            this.textBoxExportPath.Name = "textBoxExportPath";
-            this.textBoxExportPath.Size = new System.Drawing.Size(323, 20);
-            this.textBoxExportPath.TabIndex = 0;
             // 
             // splitContainer1
             // 
@@ -153,6 +135,16 @@
             this.textBoxTikz.Size = new System.Drawing.Size(498, 631);
             this.textBoxTikz.TabIndex = 0;
             // 
+            // comboBoxScene
+            // 
+            this.comboBoxScene.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxScene.FormattingEnabled = true;
+            this.comboBoxScene.Location = new System.Drawing.Point(12, 6);
+            this.comboBoxScene.Name = "comboBoxScene";
+            this.comboBoxScene.Size = new System.Drawing.Size(162, 21);
+            this.comboBoxScene.TabIndex = 2;
+            this.comboBoxScene.SelectedIndexChanged += new System.EventHandler(this.comboBoxScene_SelectedIndexChanged);
+            // 
             // TikzDemoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,13 +172,12 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnExportFile;
-        private System.Windows.Forms.TextBox textBoxExportPath;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private ILNumerics.Drawing.ILPanel ilPanel;
         private System.Windows.Forms.TextBox textBoxTikz;
         private System.Windows.Forms.Button btnExportText;
+        private System.Windows.Forms.ComboBox comboBoxScene;
     }
 }
 
