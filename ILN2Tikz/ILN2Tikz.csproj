@@ -37,15 +37,17 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generator\IRootBinder.cs" />
+    <Compile Include="Generator\ITikzGroupElement.cs" />
     <Compile Include="Generator\Plots\TikzPlot.cs" />
     <Compile Include="Generator\Plots\TikzPlot3.cs" />
+    <Compile Include="Generator\TableHelper.cs" />
+    <Compile Include="Generator\TikzBinder.cs" />
     <Compile Include="ILN2Tikz.cs" />
     <Compile Include="Generator\ITikzElement.cs" />
     <Compile Include="ILNumerics_deploy\ILNHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Generator\TikzAxis.cs" />
-    <Compile Include="Generator\TikzElementBase.cs" />
+    <Compile Include="Generator\TikzGroupElementBase.cs" />
     <Compile Include="Generator\TikzPicture.cs" />
     <Compile Include="Generator\TikzWriter.cs" />
   </ItemGroup>

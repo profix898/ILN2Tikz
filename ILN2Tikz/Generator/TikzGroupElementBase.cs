@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using ILNumerics.Drawing;
 
 namespace ILN2Tikz.Generator
 {
-    public abstract class TikzElementBase : ITikzElement, ICollection<ITikzElement>
+    public abstract class TikzGroupElementBase : ITikzElement, ICollection<ITikzElement>, ITikzGroupElement
     {
-        private readonly List<ITikzElement> childElements = new List<ITikzElement>();
-
+        private readonly List<ITikzElement> children = new List<ITikzElement>();
+        
         #region Implementation of ITikzElement
 
         public abstract string PreTag { get; }
@@ -16,10 +18,10 @@ namespace ILN2Tikz.Generator
             get
             {
                 // Return elements (one-by-one)
-                foreach (var element in childElements)
+                foreach (var element in children)
                 {
                     // Return PreTag of the nth element
-                    if (!string.IsNullOrEmpty(element.PreTag))
+                    if (!String.IsNullOrEmpty(element.PreTag))
                         yield return element.PreTag;
 
                     // Return content of the nth element (line-by-line)
@@ -27,7 +29,7 @@ namespace ILN2Tikz.Generator
                         yield return contentLine;
 
                     // Return PostTag of the nth element
-                    if (!string.IsNullOrEmpty(element.PostTag))
+                    if (!String.IsNullOrEmpty(element.PostTag))
                         yield return element.PostTag;
                 }
             }
@@ -35,18 +37,29 @@ namespace ILN2Tikz.Generator
 
         public abstract string PostTag { get; }
 
+        public virtual void Bind(ILNode node)
+        {
+            // Not needed for a group element
+        }
+
+        #endregion
+
+        #region Implementation of ITikzGroupElement
+
+        public abstract void Bind(ILGroup group);
+
         #endregion
 
         #region Implementation of IEnumerable
 
         public IEnumerator<ITikzElement> GetEnumerator()
         {
-            return childElements.GetEnumerator();
+            return children.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable) childElements).GetEnumerator();
+            return ((IEnumerable) children).GetEnumerator();
         }
 
         #endregion
@@ -55,32 +68,32 @@ namespace ILN2Tikz.Generator
 
         public void Add(ITikzElement item)
         {
-            childElements.Add(item);
+            children.Add(item);
         }
 
         public void Clear()
         {
-            childElements.Clear();
+            children.Clear();
         }
 
         public bool Contains(ITikzElement item)
         {
-            return childElements.Contains(item);
+            return children.Contains(item);
         }
 
         public void CopyTo(ITikzElement[] array, int arrayIndex)
         {
-            childElements.CopyTo(array, arrayIndex);
+            children.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(ITikzElement item)
         {
-            return childElements.Remove(item);
+            return children.Remove(item);
         }
 
         public int Count
         {
-            get { return childElements.Count; }
+            get { return children.Count; }
         }
 
         public bool IsReadOnly
