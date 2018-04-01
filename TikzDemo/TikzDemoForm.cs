@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using ILNumerics;
 using ILNumerics.Drawing;
@@ -13,6 +14,7 @@ namespace TikzDemo
             InitializeComponent();
 
             comboBoxScene.Items.Add("LinePlot");
+            comboBoxScene.Items.Add("LinePlot (log)");
             comboBoxScene.Items.Add("Surface");
         }
 
@@ -34,17 +36,32 @@ namespace TikzDemo
                 var linePlot = ILLinePlot.CreateXPlots(A,
                     lineStyles: new[] { DashStyle.Solid, DashStyle.Solid, DashStyle.Solid, DashStyle.Solid, DashStyle.Dashed, DashStyle.Dashed, DashStyle.Dashed, DashStyle.PointDash, DashStyle.PointDash, DashStyle.PointDash, DashStyle.Dotted, DashStyle.Dotted, DashStyle.Dotted },
                     lineWidth: new[] {1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1});
+
                 plotCube.Add(linePlot);
             }
 
-            if (comboBoxScene.SelectedIndex == 1) // Surface
+            if (comboBoxScene.SelectedIndex == 1) // LinePlot (log)
+            {
+                ILArray<double> x = ILMath.logspace(0, 3);
+                ILArray<double> y = ILMath.abs(ILMath.randn(1, 30)) * x * x;
+                ILArray<float> A = ILMath.zeros<float>(2, x.Length);
+                A[0, ILMath.full] = ILMath.tosingle(x);
+                A[1, ILMath.full] = ILMath.tosingle(y);
+                var linePlot = new ILLinePlot(A, markerStyle: MarkerStyle.Cross, markerColor: Color.Crimson);
+
+                plotCube.Add(linePlot);
+                plotCube.ScaleModes.XAxisScale = AxisScale.Logarithmic;
+                plotCube.ScaleModes.YAxisScale = AxisScale.Logarithmic;
+            }
+
+            if (comboBoxScene.SelectedIndex == 2) // Surface
             {
                 var surface = new ILSurface((x, y) =>
                     (float) (Math.Sin(x) * Math.Cos(y) * Math.Exp(-(x * x + y * y) / 46)),
                     -10, 10, 40, -5, 5, 40);
                 surface.Colormap = Colormaps.ILNumerics;
-                plotCube.Add(surface);
 
+                plotCube.Add(surface);
                 plotCube.TwoDMode = false;
             }
 
