@@ -14,7 +14,7 @@ namespace ILN2Tikz.Generator.Elements
 
         public string PreTag
         {
-            get { return @"\addplot3[surf,shader=faceted interp]"; }
+            get { return @"\addplot3[surf]"; }
         }
 
         public IEnumerable<string> Content
@@ -41,7 +41,7 @@ namespace ILN2Tikz.Generator.Elements
 
             this.surface = surface; // Reference for data table
 
-            // TODO: Color, line style, line width, etc.
+            // TODO: Colormap, etc.
         }
 
         #endregion
