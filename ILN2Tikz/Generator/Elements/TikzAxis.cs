@@ -419,6 +419,11 @@ namespace ILN2Tikz.Generator.Elements
             XScale = plotCube.ScaleModes.XAxisScale;
             XMin = plotCube.Axes.XAxis.Min ?? plotCube.Plots.Limits.XMin;
             XMax = plotCube.Axes.XAxis.Max ?? plotCube.Plots.Limits.XMax;
+            if (plotCube.ScaleModes.XAxisScale == AxisScale.Logarithmic)
+            {
+                XMin = (float) Math.Pow(10.0, XMin);
+                XMax = (float) Math.Pow(10.0, XMax);
+            }
             XTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.XAxis.Ticks.TickLength);
             XMajorTicks = plotCube.Axes.XAxis.Ticks.Visible;
             XMinorTicks = false;
@@ -430,6 +435,11 @@ namespace ILN2Tikz.Generator.Elements
             YScale = plotCube.ScaleModes.YAxisScale;
             YMin = plotCube.Axes.YAxis.Min ?? plotCube.Plots.Limits.YMin;
             YMax = plotCube.Axes.YAxis.Max ?? plotCube.Plots.Limits.YMax;
+            if (plotCube.ScaleModes.YAxisScale == AxisScale.Logarithmic)
+            {
+                YMin = (float) Math.Pow(10.0, YMin);
+                YMax = (float) Math.Pow(10.0, YMax);
+            }
             YTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.YAxis.Ticks.TickLength);
             YMajorTicks = plotCube.Axes.YAxis.Ticks.Visible;
             YMinorTicks = false;
@@ -441,6 +451,11 @@ namespace ILN2Tikz.Generator.Elements
             ZScale = plotCube.ScaleModes.ZAxisScale;
             ZMin = plotCube.Axes.ZAxis.Min ?? plotCube.Plots.Limits.ZMin;
             ZMax = plotCube.Axes.ZAxis.Max ?? plotCube.Plots.Limits.ZMax;
+            if (plotCube.ScaleModes.ZAxisScale == AxisScale.Logarithmic)
+            {
+                ZMin = (float) Math.Pow(10.0, ZMin);
+                ZMax = (float) Math.Pow(10.0, ZMax);
+            }
             ZTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.ZAxis.Ticks.TickLength);
             ZMajorTicks = plotCube.Axes.ZAxis.Ticks.Visible;
             ZMinorTicks = false;

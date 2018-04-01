@@ -53,10 +53,13 @@ namespace ILN2Tikz.Generator.Elements
             LineColor = linePlot.Line.Color ?? Color.Black;
             if (!Globals.Colors.Contains(LineColor))
                 Globals.Colors.Add(LineColor);
+            LineStyle = linePlot.Line.DashStyle;
             LineWidth = linePlot.Line.Width;
-            DashStyle = linePlot.Line.DashStyle;
 
             // Marker
+            MarkerColor = linePlot.Marker.Fill.Color ?? LineColor;
+            if (!Globals.Colors.Contains(MarkerColor))
+                Globals.Colors.Add(MarkerColor);
             MarkerStyle = linePlot.Marker.Style;
             MarkerSize = linePlot.Marker.Size;
         }
@@ -67,13 +70,15 @@ namespace ILN2Tikz.Generator.Elements
 
         public Color LineColor { get; set; }
 
-        public int LineWidth { get; set; }
+        public DashStyle LineStyle { get; set; }
 
-        public DashStyle DashStyle { get; set; }
+        public int LineWidth { get; set; }
 
         #endregion
 
         #region Marker
+
+        public Color MarkerColor { get; set; }
 
         public MarkerStyle MarkerStyle { get; set; }
 
@@ -94,7 +99,7 @@ namespace ILN2Tikz.Generator.Elements
         {
             get
             {
-                switch (DashStyle)
+                switch (LineStyle)
                 {
                     case DashStyle.Solid:
                         return "solid";
@@ -121,7 +126,7 @@ namespace ILN2Tikz.Generator.Elements
                 if (MarkerStyle == MarkerStyle.None)
                     return "";
 
-                return $"mark={TikzMarkerStyle},mark size={MarkerSize}";
+                return $"mark={TikzMarkerStyle},mark size={MarkerSize},mark options={{fill={Globals.Colors.GetColorName(MarkerColor)}}}";
             }
         }
 
@@ -136,23 +141,23 @@ namespace ILN2Tikz.Generator.Elements
                     case MarkerStyle.Circle:
                         return "o";
                     case MarkerStyle.Diamond:
-                        return "diamond";
+                        return "diamond*";
                     case MarkerStyle.Square:
-                        return "square";
+                        return "square*";
                     case MarkerStyle.Rectangle:
-                        return "square";
+                        return "square*";
                     case MarkerStyle.TriangleUp:
-                        return "triangle";
+                        return "triangle*";
                     case MarkerStyle.TriangleDown:
-                        return "triangle";
+                        return "triangle*";
                     case MarkerStyle.TriangleLeft:
-                        return "pentagon";
+                        return "pentagon*";
                     case MarkerStyle.TriangleRight:
-                        return "pentagon";
+                        return "pentagon*";
                     case MarkerStyle.Plus:
-                        return "+";
+                        return "oplus*"; //return "+";
                     case MarkerStyle.Cross:
-                        return "x";
+                        return "otimes*"; //return "x";
                     case MarkerStyle.None:
                         return "";
                     default:
