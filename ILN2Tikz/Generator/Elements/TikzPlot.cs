@@ -165,6 +165,8 @@ namespace ILN2Tikz.Generator.Elements
 
         private static IEnumerable<string> DataTable(ILLinePlot linePlot)
         {
+            var scaleModes = linePlot.FirstUp<ILPlotCubeDataGroup>().ScaleModes;
+            
             yield return "  table[row sep=crcr]{";
 
             ILArray<float> positions = linePlot.Positions; // 3 x n
@@ -172,7 +174,11 @@ namespace ILN2Tikz.Generator.Elements
             {
                 ILArray<float> xyz = positions[ILMath.full, i];
                 var x = (float) xyz[0];
+                if (scaleModes.XAxisScale == AxisScale.Logarithmic)
+                    x = (float) Math.Pow(10.0, x);
                 var y = (float) xyz[1];
+                if (scaleModes.YAxisScale == AxisScale.Logarithmic)
+                    y = (float) Math.Pow(10.0, y);
 
                 yield return FormattableString.Invariant($"  {x}	{y}\\\\");
             }

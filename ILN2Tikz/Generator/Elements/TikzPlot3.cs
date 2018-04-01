@@ -50,6 +50,8 @@ namespace ILN2Tikz.Generator.Elements
 
         private static IEnumerable<string> DataTable(ILSurface surface)
         {
+            var scaleModes = surface.FirstUp<ILPlotCubeDataGroup>().ScaleModes;
+
             yield return "  table[row sep=crcr]{";
 
             ILArray<float> positions = surface.Positions; // n x n x 3 (z, x, y)
@@ -59,8 +61,14 @@ namespace ILN2Tikz.Generator.Elements
                 {
                     ILArray<float> xyz = positions[i, j, ILMath.full];
                     var x = (float) xyz[1];
+                    if (scaleModes.XAxisScale == AxisScale.Logarithmic)
+                        x = (float) Math.Pow(10.0, x);
                     var y = (float) xyz[2];
+                    if (scaleModes.YAxisScale == AxisScale.Logarithmic)
+                        y = (float) Math.Pow(10.0, y);
                     var z = (float) xyz[0];
+                    if (scaleModes.ZAxisScale == AxisScale.Logarithmic)
+                        z = (float) Math.Pow(10.0, z);
 
                     yield return FormattableString.Invariant($"  {x}  {y} {z}\\\\");
                 }
