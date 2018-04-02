@@ -14,7 +14,7 @@ namespace ILN2Tikz.Generator.Elements
 
         public string PreTag
         {
-            get { return @"\addplot3[surf]"; }
+            get { return @"\addplot3[surf,shader=interp]"; }
         }
 
         public IEnumerable<string> Content
