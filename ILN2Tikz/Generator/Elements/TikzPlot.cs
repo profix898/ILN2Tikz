@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ILN2Tikz.Generator.Global;
 using ILNumerics;
 using ILNumerics.Drawing;
@@ -19,9 +20,9 @@ namespace ILN2Tikz.Generator.Elements
             get
             {
                 if (MarkerStyle == MarkerStyle.None)
-                    return $"\\addplot[{TikzLine}]";
+                    return $"\\addplot[{FormatTikzLine}]";
 
-                return $"\\addplot[{TikzLine},{TikzMarker}]";
+                return $"\\addplot[{FormatTikzLine},{FormatTikzMarker}]";
             }
         }
 
@@ -31,7 +32,7 @@ namespace ILN2Tikz.Generator.Elements
             {
                 if (linePlot != null)
                 {
-                    foreach (var tableEntry in DataTable(linePlot))
+                    foreach (var tableEntry in FormatDataTable(linePlot))
                         yield return tableEntry;
                 }
             }
@@ -39,7 +40,13 @@ namespace ILN2Tikz.Generator.Elements
 
         public string PostTag
         {
-            get { return ""; }
+            get
+            {
+                if (String.IsNullOrEmpty(LegendItemText))
+                    return "";
+
+                return $"\\addlegendentry{{{LegendItemText}}}";
+            }
         }
 
         public void Bind(ILNode node)
@@ -51,20 +58,25 @@ namespace ILN2Tikz.Generator.Elements
 
             // Line
             LineColor = linePlot.Line.Color ?? Color.Black;
-            if (!Globals.Colors.Contains(LineColor))
-                Globals.Colors.Add(LineColor);
+            Globals.Colors.Add(LineColor);
             LineStyle = linePlot.Line.DashStyle;
             LineWidth = linePlot.Line.Width;
 
             // Marker
             MarkerColor = linePlot.Marker.Fill.Color ?? LineColor;
-            if (!Globals.Colors.Contains(MarkerColor))
-                Globals.Colors.Add(MarkerColor);
+            Globals.Colors.Add(MarkerColor);
             MarkerStyle = linePlot.Marker.Style;
-            MarkerSize = linePlot.Marker.Size;
+            MarkerSize = Math.Max(linePlot.Marker.Size / 2, 1);
+
+            // LegendEntry
+            var legend = linePlot.FirstUp<ILPlotCube>().First<ILLegend>();
+            if (legend != null)
+                LegendItemText = legend.Find<ILLegendItem>().FirstOrDefault(legendItem => legendItem.ProviderID == linePlot.ID)?.Text;
         }
 
         #endregion
+
+        #region Properties
 
         #region Line
 
@@ -86,16 +98,24 @@ namespace ILN2Tikz.Generator.Elements
 
         #endregion
 
-        #region FormatHelper
+        #region Legend
+
+        public string LegendItemText { get; set; }
+
+        #endregion
+
+        #endregion
+
+        #region FormatHelpers
 
         #region Line
 
-        private string TikzLine
+        private string FormatTikzLine
         {
-            get { return $"color={Globals.Colors.GetColorName(LineColor)},{TikzDashStyle},line width={LineWidth}pt"; }
+            get { return $"color={Globals.Colors.GetColorName(LineColor)},{FormatTikzDashStyle},line width={LineWidth}pt"; }
         }
 
-        private string TikzDashStyle
+        private string FormatTikzDashStyle
         {
             get
             {
@@ -119,18 +139,18 @@ namespace ILN2Tikz.Generator.Elements
 
         #region Marker
 
-        private string TikzMarker
+        private string FormatTikzMarker
         {
             get
             {
                 if (MarkerStyle == MarkerStyle.None)
                     return "";
 
-                return $"mark={TikzMarkerStyle},mark size={MarkerSize},mark options={{fill={Globals.Colors.GetColorName(MarkerColor)}}}";
+                return $"mark={FormatTikzMarkerStyle},mark size={MarkerSize},mark options={{fill={Globals.Colors.GetColorName(MarkerColor)}}}";
             }
         }
 
-        private string TikzMarkerStyle
+        private string FormatTikzMarkerStyle
         {
             get
             {
@@ -168,7 +188,7 @@ namespace ILN2Tikz.Generator.Elements
 
         #endregion
 
-        private static IEnumerable<string> DataTable(ILLinePlot linePlot)
+        private static IEnumerable<string> FormatDataTable(ILLinePlot linePlot)
         {
             var scaleModes = linePlot.FirstUp<ILPlotCubeDataGroup>().ScaleModes;
             

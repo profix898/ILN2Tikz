@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
 
@@ -27,12 +28,6 @@ namespace ILN2Tikz.Generator.Elements
             Inside,
             Center,
             Outside
-        }
-
-        public enum AxisScaleEnum
-        {
-            Linear,
-            Logarithmic
         }
 
         #region Implementation of ITikzElement
@@ -235,6 +230,13 @@ namespace ILN2Tikz.Generator.Elements
 
                 #endregion
 
+                #region Legend
+
+                if (LegendVisible)
+                    yield return FormatTikzLegendStyle;
+
+                #endregion
+
                 yield return "]";
 
                 // Return child elements
@@ -249,6 +251,94 @@ namespace ILN2Tikz.Generator.Elements
         }
 
         #endregion
+
+        #region Implementation of ITikzGroupElement
+
+        public override void Bind(ILGroup group)
+        {
+            var plotCube = group as ILPlotCube;
+            if (plotCube == null)
+                return;
+
+            // Global
+            var title = group.First<ILTitle>();
+            Title = title?.Label?.Text ?? String.Empty;
+            Size = new Rectangle(0, 0, 150, 100); // TODO: Aspect ratio
+            TwoDMode = plotCube.TwoDMode;
+            if (!TwoDMode)
+            {
+                // Default orientation for 3D view
+                ViewAzimuth = 60;
+                ViewElevation = 60;
+            }
+
+            // XAxis
+            XLabel = plotCube.Axes.XAxis.Label.Text;
+            XScale = plotCube.ScaleModes.XAxisScale;
+            XMin = plotCube.Axes.XAxis.Min ?? plotCube.Plots.Limits.XMin;
+            XMax = plotCube.Axes.XAxis.Max ?? plotCube.Plots.Limits.XMax;
+            if (plotCube.ScaleModes.XAxisScale == AxisScale.Logarithmic)
+            {
+                XMin = (float) Math.Pow(10.0, XMin);
+                XMax = (float) Math.Pow(10.0, XMax);
+            }
+            XTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.XAxis.Ticks.TickLength);
+            XMajorTicks = plotCube.Axes.XAxis.Ticks.Visible;
+            XMinorTicks = false;
+            XMajorGrid = plotCube.Axes.XAxis.GridMajor.Visible;
+            XMinorGrid = plotCube.Axes.XAxis.GridMinor.Visible;
+            
+            // YAxis
+            YLabel = plotCube.Axes.YAxis.Label.Text;
+            YScale = plotCube.ScaleModes.YAxisScale;
+            YMin = plotCube.Axes.YAxis.Min ?? plotCube.Plots.Limits.YMin;
+            YMax = plotCube.Axes.YAxis.Max ?? plotCube.Plots.Limits.YMax;
+            if (plotCube.ScaleModes.YAxisScale == AxisScale.Logarithmic)
+            {
+                YMin = (float) Math.Pow(10.0, YMin);
+                YMax = (float) Math.Pow(10.0, YMax);
+            }
+            YTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.YAxis.Ticks.TickLength);
+            YMajorTicks = plotCube.Axes.YAxis.Ticks.Visible;
+            YMinorTicks = false;
+            YMajorGrid = plotCube.Axes.YAxis.GridMajor.Visible;
+            YMinorGrid = plotCube.Axes.YAxis.GridMinor.Visible;
+            
+            // ZAxis
+            ZLabel = plotCube.Axes.ZAxis.Label.Text;
+            ZScale = plotCube.ScaleModes.ZAxisScale;
+            ZMin = plotCube.Axes.ZAxis.Min ?? plotCube.Plots.Limits.ZMin;
+            ZMax = plotCube.Axes.ZAxis.Max ?? plotCube.Plots.Limits.ZMax;
+            if (plotCube.ScaleModes.ZAxisScale == AxisScale.Logarithmic)
+            {
+                ZMin = (float) Math.Pow(10.0, ZMin);
+                ZMax = (float) Math.Pow(10.0, ZMax);
+            }
+            ZTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.ZAxis.Ticks.TickLength);
+            ZMajorTicks = plotCube.Axes.ZAxis.Ticks.Visible;
+            ZMinorTicks = false;
+            ZMajorGrid = plotCube.Axes.ZAxis.GridMajor.Visible;
+            ZMinorGrid = plotCube.Axes.ZAxis.GridMinor.Visible;
+
+            // Legend
+            var legend = plotCube.First<ILLegend>();
+            if (legend != null)
+            {
+                LegendVisible = legend.Visible;
+                LegendLocation = legend.Location;
+                LegendBorderColor = legend.Border.Color ?? Color.Black;
+                Globals.Colors.Add(LegendBorderColor);
+                LegendBackgroundColor = legend.Background.Color ?? Color.White;
+                Globals.Colors.Add(LegendBackgroundColor);
+            }
+            
+            // Map plots (ILLinePlot, ILSurface, etc.)
+            this.BindPlots(plotCube);
+        }
+
+        #endregion
+
+        #region Properties
 
         #region Global
 
@@ -396,79 +486,49 @@ namespace ILN2Tikz.Generator.Elements
 
         #endregion
 
-        public override void Bind(ILGroup group)
-        {
-            var plotCube = group as ILPlotCube;
-            if (plotCube == null)
-                return;
+        #region Legend
 
-            // Global
-            var title = group.First<ILTitle>();
-            Title = title?.Label?.Text ?? String.Empty;
-            Size = new Rectangle(0, 0, 150, 100); // TODO: Aspect ratio
-            TwoDMode = plotCube.TwoDMode;
-            if (!TwoDMode)
-            {
-                // Default orientation for 3D view
-                ViewAzimuth = 60;
-                ViewElevation = 60;
-            }
+        public bool LegendVisible { get; set; }
 
-            // XAxis
-            XLabel = plotCube.Axes.XAxis.Label.Text;
-            XScale = plotCube.ScaleModes.XAxisScale;
-            XMin = plotCube.Axes.XAxis.Min ?? plotCube.Plots.Limits.XMin;
-            XMax = plotCube.Axes.XAxis.Max ?? plotCube.Plots.Limits.XMax;
-            if (plotCube.ScaleModes.XAxisScale == AxisScale.Logarithmic)
-            {
-                XMin = (float) Math.Pow(10.0, XMin);
-                XMax = (float) Math.Pow(10.0, XMax);
-            }
-            XTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.XAxis.Ticks.TickLength);
-            XMajorTicks = plotCube.Axes.XAxis.Ticks.Visible;
-            XMinorTicks = false;
-            XMajorGrid = plotCube.Axes.XAxis.GridMajor.Visible;
-            XMinorGrid = plotCube.Axes.XAxis.GridMinor.Visible;
-            
-            // YAxis
-            YLabel = plotCube.Axes.YAxis.Label.Text;
-            YScale = plotCube.ScaleModes.YAxisScale;
-            YMin = plotCube.Axes.YAxis.Min ?? plotCube.Plots.Limits.YMin;
-            YMax = plotCube.Axes.YAxis.Max ?? plotCube.Plots.Limits.YMax;
-            if (plotCube.ScaleModes.YAxisScale == AxisScale.Logarithmic)
-            {
-                YMin = (float) Math.Pow(10.0, YMin);
-                YMax = (float) Math.Pow(10.0, YMax);
-            }
-            YTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.YAxis.Ticks.TickLength);
-            YMajorTicks = plotCube.Axes.YAxis.Ticks.Visible;
-            YMinorTicks = false;
-            YMajorGrid = plotCube.Axes.YAxis.GridMajor.Visible;
-            YMinorGrid = plotCube.Axes.YAxis.GridMinor.Visible;
-            
-            // ZAxis
-            ZLabel = plotCube.Axes.ZAxis.Label.Text;
-            ZScale = plotCube.ScaleModes.ZAxisScale;
-            ZMin = plotCube.Axes.ZAxis.Min ?? plotCube.Plots.Limits.ZMin;
-            ZMax = plotCube.Axes.ZAxis.Max ?? plotCube.Plots.Limits.ZMax;
-            if (plotCube.ScaleModes.ZAxisScale == AxisScale.Logarithmic)
-            {
-                ZMin = (float) Math.Pow(10.0, ZMin);
-                ZMax = (float) Math.Pow(10.0, ZMax);
-            }
-            ZTicksAlign = TickLengthToTicksAlignEnum(plotCube.Axes.ZAxis.Ticks.TickLength);
-            ZMajorTicks = plotCube.Axes.ZAxis.Ticks.Visible;
-            ZMinorTicks = false;
-            ZMajorGrid = plotCube.Axes.ZAxis.GridMajor.Visible;
-            ZMinorGrid = plotCube.Axes.ZAxis.GridMinor.Visible;
+        public PointF LegendLocation { get; set; }
 
-            // TODO: Legend
-            
-            // Map plots (ILLinePlot, ILSurface, etc.)
-            this.BindPlots(plotCube);
-        }
+        public Color LegendBorderColor { get; set; }
+
+        public Color LegendBackgroundColor { get; set; }
+
+        #endregion
+
+        #endregion
 
         #region Helpers
+
+        #region Legend
+
+        private string FormatTikzLegendStyle
+        {
+            get
+            {
+                return FormattableString.Invariant($"  legend style={{legend cell align=left,align=left,{FormatTikzLegendColors},{FormatTikzLegendLocation}}},");
+            }
+        }
+
+        private string FormatTikzLegendColors
+        {
+            get
+            {
+                return FormattableString.Invariant($"fill={Globals.Colors.GetColorName(LegendBackgroundColor)},draw={Globals.Colors.GetColorName(LegendBorderColor)}");
+            }
+        }
+
+        private string FormatTikzLegendLocation
+        {
+            get
+            {
+                return FormattableString.Invariant($"at={{({LegendLocation.X},{1f-LegendLocation.Y})}}");
+            }
+        }
+
+        #endregion
 
         private TicksAlignEnum TickLengthToTicksAlignEnum(float tickLength)
         {

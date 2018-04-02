@@ -9,6 +9,8 @@ namespace ILN2Tikz.Generator.Global
         public PGFPlotOptions()
         {
             Add("set layers"); // Sort layers
+            Add("major grid style={solid,very thin,white!80!black}"); // Default major grid style
+            Add("minor grid style={dashed,very thin,white!90!black}"); // Default minor grid style
         }
 
         #region Implementation of ITikzElement
