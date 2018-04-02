@@ -11,7 +11,7 @@ namespace ILN2Tikz.Generator.Elements
 
         public override string PreTag
         {
-            get { return "% Created via ILNumerics to TIKZ converter"; }
+            get { return "% Created via ILN2TIKZ converter"; }
         }
 
         public override IEnumerable<string> Content

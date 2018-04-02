@@ -43,15 +43,23 @@ namespace TikzDemo
             if (comboBoxScene.SelectedIndex == 1) // LinePlot (log)
             {
                 ILArray<double> x = ILMath.logspace(0, 3);
-                ILArray<double> y = ILMath.abs(ILMath.randn(1, 30)) * x * x;
-                ILArray<float> A = ILMath.zeros<float>(2, x.Length);
+                ILArray<float> A = ILMath.zeros<float>(3, x.Length);
                 A[0, ILMath.full] = ILMath.tosingle(x);
-                A[1, ILMath.full] = ILMath.tosingle(y);
-                var linePlot = new ILLinePlot(A, markerStyle: MarkerStyle.Cross, markerColor: Color.Crimson);
 
-                plotCube.Add(linePlot);
+                ILArray<double> y1 = 10 + ILMath.abs(ILMath.randn(1, 30)) * x;
+                A[1, ILMath.full] = ILMath.tosingle(y1);
+                var linePlot1 = new ILLinePlot(A, markerStyle: MarkerStyle.Cross, markerColor: Color.Crimson);
+                plotCube.Add(linePlot1);
+
+                ILArray<double> y2 = ILMath.abs(ILMath.randn(1, 30)) * x * x;
+                A[1, ILMath.full] = ILMath.tosingle(y2);
+                var linePlot2 = new ILLinePlot(A, markerStyle: MarkerStyle.Cross, markerColor: Color.BlueViolet);
+                plotCube.Add(linePlot2);
+                
                 plotCube.ScaleModes.XAxisScale = AxisScale.Logarithmic;
                 plotCube.ScaleModes.YAxisScale = AxisScale.Logarithmic;
+
+                plotCube.Add(new ILLegend("one", "two"));
             }
 
             if (comboBoxScene.SelectedIndex == 2) // Surface

@@ -1,18 +1,77 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using ILNumerics.Drawing;
 
 namespace ILN2Tikz.Generator.Global
 {
-    public class TikzColors : List<Color>, ITikzElement
+    public class TikzColors : ICollection<Color>, ITikzElement
     {
+        #region KnownColors
+
+        private readonly Dictionary<Color, string> knownColors = new Dictionary<Color, string>
+        {
+            { Color.Black, "black" },
+            { Color.White, "white" }
+        };
+
+        #endregion
+
+        private readonly List<Color> colors = new List<Color>();
+
+        #region ICollection<Color>
+
+        public int Count => colors.Count;
+
+        public bool IsReadOnly => false;
+
+        public void Add(Color item)
+        {
+            if (knownColors.ContainsKey(item))
+                return;
+
+            colors.Add(item);
+        }
+
+        public void Clear()
+        {
+            colors.Clear();
+        }
+
+        public bool Contains(Color item)
+        {
+            if (knownColors.ContainsKey(item))
+                return true;
+
+            return colors.Contains(item);
+        }
+
+        public void CopyTo(Color[] array, int arrayIndex)
+        {
+            colors.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(Color item)
+        {
+            return colors.Remove(item);
+        }
+
+        public IEnumerator<Color> GetEnumerator()
+        {
+            return colors.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable) colors).GetEnumerator();
+        }
+
+        #endregion
+
         #region Implementation of ITikzElement
 
-        public string PreTag
-        {
-            get { return ""; }
-        }
+        public string PreTag => "";
 
         public IEnumerable<string> Content
         {
@@ -22,17 +81,14 @@ namespace ILN2Tikz.Generator.Global
                 for (var i = 0; i < Count; i++)
                 {
                     var colorName = $"colorDef{i:D2}";
-                    var color = GetTikzColor(this[i]);
+                    var color = FormatTikzColor(colors[i]);
 
                     yield return $"\\definecolor{{{colorName}}}{{rgb}}{{{color}}}";
                 }
             }
         }
 
-        public string PostTag
-        {
-            get { return ""; }
-        }
+        public string PostTag => "";
 
         public void Bind(ILNode node)
         {
@@ -44,10 +100,13 @@ namespace ILN2Tikz.Generator.Global
 
         public string GetColorName(Color color)
         {
-            return $"colorDef{IndexOf(color):D2}";
+            if (knownColors.ContainsKey(color))
+                return knownColors[color];
+
+            return $"colorDef{colors.IndexOf(color):D2}";
         }
 
-        public string GetTikzColor(Color color)
+        public string FormatTikzColor(Color color)
         {
             var r = color.R / 255.0;
             var g = color.G / 255.0;
