@@ -7,8 +7,12 @@ namespace ILN2Tikz.Generator.Global
 {
     public sealed class PGFPlotOptions : List<string>, ITikzElement
     {
-        public PGFPlotOptions()
+        private readonly Globals globals;
+
+        public PGFPlotOptions(Globals globals)
         {
+            this.globals = globals;
+
             Add("compat=1.13"); // Minimum version
             Add("set layers"); // Sort layers
             Add("major grid style={solid,very thin,white!80!black}"); // Default major grid style
@@ -24,13 +28,13 @@ namespace ILN2Tikz.Generator.Global
         public void SetMajorGridStyle(Color gridColor, DashStyle gridStyle, int gridWidth)
         {
             // Replace default major grid style
-            this[2] = $"major grid style={{{TikzFormatUtility.FormatLine(gridColor, gridStyle, 0.5f * gridWidth)}}}";
+            this[2] = $"major grid style={{{TikzFormatUtility.FormatLine(globals, gridColor, gridStyle, 0.5f * gridWidth)}}}";
         }
 
         public void SetMinorGridStyle(Color gridColor, DashStyle gridStyle, int gridWidth)
         {
             // Replace default minor grid style
-            this[3] = $"minor grid style={{{TikzFormatUtility.FormatLine(gridColor, gridStyle, 0.5f * gridWidth)}}}";
+            this[3] = $"minor grid style={{{TikzFormatUtility.FormatLine(globals, gridColor, gridStyle, 0.5f * gridWidth)}}}";
         }
 
         #region Implementation of ITikzElement
@@ -60,7 +64,7 @@ namespace ILN2Tikz.Generator.Global
             get { return ""; }
         }
 
-        public void Bind(ILNode node)
+        public void Bind(ILNode node, Globals globals)
         {
             // NOTE: Don't bind automatically
             throw new NotSupportedException();

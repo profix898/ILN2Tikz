@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
 
 namespace ILN2Tikz.Generator
@@ -17,7 +18,7 @@ namespace ILN2Tikz.Generator
 
         #region Binding
         
-        void Bind(ILNode node);
+        void Bind(ILNode node, Globals globals);
 
         #endregion
     }

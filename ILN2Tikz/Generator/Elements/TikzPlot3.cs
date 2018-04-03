@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ILN2Tikz.Generator.Global;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
@@ -34,7 +35,7 @@ namespace ILN2Tikz.Generator.Elements
             get { return ""; }
         }
 
-        public void Bind(ILNode node)
+        public void Bind(ILNode node, Globals globals)
         {
             if (!(node is ILSurface surface))
                 return;
