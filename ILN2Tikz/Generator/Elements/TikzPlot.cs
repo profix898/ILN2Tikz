@@ -46,7 +46,7 @@ namespace ILN2Tikz.Generator.Elements
                 if (String.IsNullOrEmpty(LegendItemText))
                     return "";
 
-                return $"\\addlegendentry{{{LegendItemText}}}";
+                return $"\\addlegendentry{{{TikzTextUtility.EscapeText(LegendItemText)}}}";
             }
         }
 
