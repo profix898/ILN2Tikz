@@ -94,7 +94,7 @@ namespace ILN2Tikz.Generator.Global
 
         public string PostTag => "";
 
-        public void Bind(ILNode node)
+        public void Bind(ILNode node, Globals globals)
         {
             // NOTE: Don't bind automatically
             throw new NotSupportedException();

@@ -97,12 +97,13 @@ namespace TikzDemo
             if (string.IsNullOrEmpty(saveFileDialog.FileName))
                 return;
 
-            ILN2Tikz.ILN2Tikz.ExportFile(ilPanel.Scene, saveFileDialog.FileName);
+            Size size = new Size(120, 120);
+            ILN2Tikz.ILN2TikzExport.ExportFile(ilPanel.Scene, saveFileDialog.FileName, size);
         }
 
         private void btnExportText_Click(object sender, EventArgs e)
         {
-            textBoxTikz.Text = ILN2Tikz.ILN2Tikz.ExportString(ilPanel.Scene);
+            textBoxTikz.Text = ILN2Tikz.ILN2TikzExport.ExportString(ilPanel.Scene);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace ILN2Tikz.Generator.Elements
 {
     public class TikzAxis : TikzGroupElementBase, ITikzGroupElement
     {
+        private Globals globals;
+
         private float[] xTicks;
         private float[] yTicks;
         private float[] zTicks;
@@ -254,10 +256,11 @@ namespace ILN2Tikz.Generator.Elements
 
         #region Implementation of ITikzGroupElement
 
-        public override void Bind(ILGroup group)
+        public override void Bind(ILGroup group, Globals globals)
         {
-            var plotCube = group as ILPlotCube;
-            if (plotCube == null)
+            this.globals = globals;
+
+            if (!(group is ILPlotCube plotCube))
                 return;
 
             // TODO: Font: Family, Size, Bold/Italic, Color
@@ -324,19 +327,19 @@ namespace ILN2Tikz.Generator.Elements
 
             // Major Grid (NOTE: Tikz doesn't support per-axis grid styles, use X axis as template)
             MajorGridColor = plotCube.Axes.XAxis.GridMajor.Color ?? Color.FromArgb(230, 230, 230);
-            Globals.Colors.Add(MajorGridColor);
+            globals.Colors.Add(MajorGridColor);
             MajorGridStyle = plotCube.Axes.XAxis.GridMajor.DashStyle;
             MajorGridWidth = plotCube.Axes.XAxis.GridMajor.Width;
             // Push style to PGFPlotOptions (NOTE: grid style is set globally)
-            Globals.PGFPlotOptions.SetMajorGridStyle(MajorGridColor, MajorGridStyle, MajorGridWidth);
+            globals.PGFPlotOptions.SetMajorGridStyle(MajorGridColor, MajorGridStyle, MajorGridWidth);
 
             // Minor Grid (NOTE: Tikz doesn't support per-axis grid styles, use X axis as template)
             MinorGridColor = plotCube.Axes.XAxis.GridMinor.Color ?? Color.FromArgb(230, 230, 230);
-            Globals.Colors.Add(MinorGridColor);
+            globals.Colors.Add(MinorGridColor);
             MinorGridStyle = plotCube.Axes.XAxis.GridMinor.DashStyle;
             MinorGridWidth = plotCube.Axes.XAxis.GridMinor.Width;
             // Push style to PGFPlotOptions (NOTE: grid style is set globally)
-            Globals.PGFPlotOptions.SetMinorGridStyle(MinorGridColor, MinorGridStyle, MinorGridWidth);
+            globals.PGFPlotOptions.SetMinorGridStyle(MinorGridColor, MinorGridStyle, MinorGridWidth);
 
             // Legend
             var legend = plotCube.First<ILLegend>();
@@ -345,13 +348,13 @@ namespace ILN2Tikz.Generator.Elements
                 LegendVisible = legend.Visible;
                 LegendLocation = legend.Location;
                 LegendBorderColor = legend.Border.Color ?? Color.Black;
-                Globals.Colors.Add(LegendBorderColor);
+                globals.Colors.Add(LegendBorderColor);
                 LegendBackgroundColor = legend.Background.Color ?? Color.White;
-                Globals.Colors.Add(LegendBackgroundColor);
+                globals.Colors.Add(LegendBackgroundColor);
             }
             
             // Map plots (ILLinePlot, ILSurface, etc.)
-            this.BindPlots(plotCube);
+            this.BindPlots(plotCube, globals);
         }
 
         #endregion
@@ -554,7 +557,7 @@ namespace ILN2Tikz.Generator.Elements
         {
             get
             {
-                return FormattableString.Invariant($"fill={Globals.Colors.GetColorName(LegendBackgroundColor)},draw={Globals.Colors.GetColorName(LegendBorderColor)}");
+                return FormattableString.Invariant($"fill={globals.Colors.GetColorName(LegendBackgroundColor)},draw={globals.Colors.GetColorName(LegendBorderColor)}");
             }
         }
 

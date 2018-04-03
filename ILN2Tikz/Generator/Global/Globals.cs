@@ -1,9 +1,20 @@
-﻿namespace ILN2Tikz.Generator.Global
-{
-    public static class Globals
-    {
-        public static PGFPlotOptions PGFPlotOptions { get; } = new PGFPlotOptions();
+﻿using System.Drawing;
 
-        public static TikzColors Colors { get; } = new TikzColors();
+namespace ILN2Tikz.Generator.Global
+{
+    public sealed class Globals
+    {
+        public Globals()
+        {
+            Size = new Size(100, 100);
+            PGFPlotOptions = new PGFPlotOptions(this);
+            Colors = new TikzColors();
+        }
+
+        public Size Size { get; set; }
+        
+        public PGFPlotOptions PGFPlotOptions { get; }
+
+        public TikzColors Colors { get; }
     }
 }
