@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using ILNEditor;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
@@ -29,6 +30,10 @@ namespace TikzDemo
                 return;
 
             var plotCube = new ILPlotCube();
+            plotCube.Axes.XAxis.Ticks.TickLength = -plotCube.Axes.XAxis.Ticks.TickLength; // Ticks Inside
+            plotCube.Axes.YAxis.Ticks.TickLength = -plotCube.Axes.YAxis.Ticks.TickLength; // Ticks Inside
+            plotCube.Axes.ZAxis.Ticks.TickLength = -plotCube.Axes.ZAxis.Ticks.TickLength; // Ticks Inside
+            plotCube.AspectRatioMode = AspectRatioMode.MaintainRatios;
 
             if (comboBoxScene.SelectedIndex == 0) // LinePlot
             {
@@ -78,6 +83,8 @@ namespace TikzDemo
 
             ilPanel.Configure();
             ilPanel.Refresh();
+
+            ILPanelEditor.AttachTo(ilPanel);
         }
 
         private void btnExportFile_Click(object sender, EventArgs e)

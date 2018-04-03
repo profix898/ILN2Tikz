@@ -20,9 +20,9 @@ namespace ILN2Tikz.Generator.Elements
             get
             {
                 if (MarkerStyle == MarkerStyle.None)
-                    return $"\\addplot[{FormatTikzLine}]";
+                    return $"\\addplot[{TikzFormatUtility.FormatLine(LineColor, LineStyle, LineWidth)}]";
 
-                return $"\\addplot[{FormatTikzLine},{FormatTikzMarker}]";
+                return $"\\addplot[{TikzFormatUtility.FormatLine(LineColor, LineStyle, LineWidth)},{TikzFormatUtility.FormatMarker(MarkerColor, MarkerStyle, MarkerSize)}]";
             }
         }
 
@@ -106,87 +106,7 @@ namespace ILN2Tikz.Generator.Elements
 
         #endregion
 
-        #region FormatHelpers
-
-        #region Line
-
-        private string FormatTikzLine
-        {
-            get { return $"color={Globals.Colors.GetColorName(LineColor)},{FormatTikzDashStyle},line width={LineWidth}pt"; }
-        }
-
-        private string FormatTikzDashStyle
-        {
-            get
-            {
-                switch (LineStyle)
-                {
-                    case DashStyle.Solid:
-                        return "solid";
-                    case DashStyle.Dashed:
-                        return "dashed";
-                    case DashStyle.PointDash:
-                        return "densely dashed";
-                    case DashStyle.Dotted:
-                        return "dotted";
-                    default:
-                        return "densely dotted"; // Fallback style
-                }
-            }
-        }
-
-        #endregion
-
-        #region Marker
-
-        private string FormatTikzMarker
-        {
-            get
-            {
-                if (MarkerStyle == MarkerStyle.None)
-                    return "";
-
-                return $"mark={FormatTikzMarkerStyle},mark size={MarkerSize},mark options={{fill={Globals.Colors.GetColorName(MarkerColor)}}}";
-            }
-        }
-
-        private string FormatTikzMarkerStyle
-        {
-            get
-            {
-                switch (MarkerStyle)
-                {
-                    case MarkerStyle.Dot:
-                        return "*";
-                    case MarkerStyle.Circle:
-                        return "o";
-                    case MarkerStyle.Diamond:
-                        return "diamond*";
-                    case MarkerStyle.Square:
-                        return "square*";
-                    case MarkerStyle.Rectangle:
-                        return "square*";
-                    case MarkerStyle.TriangleUp:
-                        return "triangle*";
-                    case MarkerStyle.TriangleDown:
-                        return "triangle*";
-                    case MarkerStyle.TriangleLeft:
-                        return "pentagon*";
-                    case MarkerStyle.TriangleRight:
-                        return "pentagon*";
-                    case MarkerStyle.Plus:
-                        return "oplus*"; //return "+";
-                    case MarkerStyle.Cross:
-                        return "otimes*"; //return "x";
-                    case MarkerStyle.None:
-                        return "";
-                    default:
-                        return "plus";
-                }
-            }
-        }
-
-        #endregion
+        #region Helpers
 
         private static IEnumerable<string> FormatDataTable(ILLinePlot linePlot)
         {

@@ -31,6 +31,10 @@ namespace ILN2Tikz.Generator.Global
             if (knownColors.ContainsKey(item))
                 return;
 
+            // Prevent duplicates (only add once)
+            if (colors.Contains(item))
+                return;
+
             colors.Add(item);
         }
 
