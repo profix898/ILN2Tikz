@@ -49,7 +49,7 @@ namespace ILN2Tikz.Generator.Elements
                 yield return $"  height={globals.Size.Height}mm,";
 
                 if (!String.IsNullOrEmpty(Title))
-                    yield return $"  title='{{{Title}}},";
+                    yield return $"  title='{{{TikzTextUtility.EscapeText(Title)}}},";
 
                 yield return FormattableString.Invariant($"  view={{({ViewAzimuth})}}{{({ViewElevation})}},");
 
@@ -58,7 +58,7 @@ namespace ILN2Tikz.Generator.Elements
                 #region XAxis
 
                 if (!String.IsNullOrEmpty(XLabel))
-                    yield return $"  xlabel={{{XLabel}}},";
+                    yield return $"  xlabel={{{TikzTextUtility.EscapeText(XLabel)}}},";
                 switch (XScale)
                 {
                     case AxisScale.Linear:
@@ -115,7 +115,7 @@ namespace ILN2Tikz.Generator.Elements
                 #region YAxis
 
                 if (!String.IsNullOrEmpty(YLabel))
-                    yield return $"  ylabel={{{YLabel}}},";
+                    yield return $"  ylabel={{{TikzTextUtility.EscapeText(YLabel)}}},";
                 switch (YScale)
                 {
                     case AxisScale.Linear:
@@ -174,7 +174,7 @@ namespace ILN2Tikz.Generator.Elements
                 if (!TwoDMode)
                 {
                     if (!String.IsNullOrEmpty(ZLabel))
-                        yield return $"  zlabel={{{ZLabel}}},";
+                        yield return $"  zlabel={{{TikzTextUtility.EscapeText(ZLabel)}}},";
                     switch (ZScale)
                     {
                         case AxisScale.Linear:
