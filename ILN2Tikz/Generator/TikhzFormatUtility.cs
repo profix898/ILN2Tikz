@@ -9,14 +9,14 @@ namespace ILN2Tikz.Generator
     {
         #region Line
 
-        internal static string FormatLine(Color color, DashStyle style, float width)
+        internal static string FormatLine(Globals globals, Color color, DashStyle style, float width)
         {
-            return FormattableString.Invariant($"color={Globals.Colors.GetColorName(color)},{FormatDashStyle(style)},line width={width:F1}pt");
+            return FormattableString.Invariant($"color={globals.Colors.GetColorName(color)},{FormatDashStyle(style)},line width={width:F1}pt");
         }
 
-        internal static string FormatLine(Color color, DashStyle style, int width)
+        internal static string FormatLine(Globals globals, Color color, DashStyle style, int width)
         {
-            return FormattableString.Invariant($"color={Globals.Colors.GetColorName(color)},{FormatDashStyle(style)},line width={width}pt");
+            return FormattableString.Invariant($"color={globals.Colors.GetColorName(color)},{FormatDashStyle(style)},line width={width}pt");
         }
 
         internal static string FormatDashStyle(DashStyle style)
@@ -40,12 +40,12 @@ namespace ILN2Tikz.Generator
 
         #region Marker
 
-        internal static string FormatMarker(Color color, MarkerStyle style, int size)
+        internal static string FormatMarker(Globals globals, Color color, MarkerStyle style, int size)
         {
             if (style == MarkerStyle.None)
                 return "";
 
-            return $"mark={FormatMarkerStyle(style)},mark size={size},mark options={{fill={Globals.Colors.GetColorName(color)}}}";
+            return $"mark={FormatMarkerStyle(style)},mark size={size},mark options={{fill={globals.Colors.GetColorName(color)}}}";
         }
 
         internal static string FormatMarkerStyle(MarkerStyle style)

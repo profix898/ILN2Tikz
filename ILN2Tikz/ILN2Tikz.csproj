@@ -45,7 +45,7 @@
     <Compile Include="Generator\Elements\TikzPlot3.cs" />
     <Compile Include="Generator\TikhzFormatUtility.cs" />
     <Compile Include="Generator\TikzBinderExtensions.cs" />
-    <Compile Include="ILN2Tikz.cs" />
+    <Compile Include="ILN2TikzExport.cs" />
     <Compile Include="Generator\ITikzElement.cs" />
     <Compile Include="ILNumerics_deploy\ILNHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,6 +11,7 @@ namespace ILN2Tikz.Generator.Elements
 {
     public class TikzPlot : ITikzElement
     {
+        private Globals globals;
         private ILLinePlot linePlot;
 
         #region Implementation of ITikzElement
@@ -20,9 +21,9 @@ namespace ILN2Tikz.Generator.Elements
             get
             {
                 if (MarkerStyle == MarkerStyle.None)
-                    return $"\\addplot[{TikzFormatUtility.FormatLine(LineColor, LineStyle, LineWidth)}]";
+                    return $"\\addplot[{TikzFormatUtility.FormatLine(globals, LineColor, LineStyle, LineWidth)}]";
 
-                return $"\\addplot[{TikzFormatUtility.FormatLine(LineColor, LineStyle, LineWidth)},{TikzFormatUtility.FormatMarker(MarkerColor, MarkerStyle, MarkerSize)}]";
+                return $"\\addplot[{TikzFormatUtility.FormatLine(globals, LineColor, LineStyle, LineWidth)},{TikzFormatUtility.FormatMarker(globals, MarkerColor, MarkerStyle, MarkerSize)}]";
             }
         }
 
@@ -49,8 +50,10 @@ namespace ILN2Tikz.Generator.Elements
             }
         }
 
-        public void Bind(ILNode node)
+        public void Bind(ILNode node, Globals globals)
         {
+            this.globals = globals;
+
             if (!(node is ILLinePlot linePlot))
                 return;
 
@@ -58,13 +61,13 @@ namespace ILN2Tikz.Generator.Elements
 
             // Line
             LineColor = linePlot.Line.Color ?? Color.Black;
-            Globals.Colors.Add(LineColor);
+            globals.Colors.Add(LineColor);
             LineStyle = linePlot.Line.DashStyle;
             LineWidth = linePlot.Line.Width;
 
             // Marker
             MarkerColor = linePlot.Marker.Fill.Color ?? LineColor;
-            Globals.Colors.Add(MarkerColor);
+            globals.Colors.Add(MarkerColor);
             MarkerStyle = linePlot.Marker.Style;
             MarkerSize = Math.Max(linePlot.Marker.Size / 2, 1);
 
