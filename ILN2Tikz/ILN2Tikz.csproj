@@ -43,6 +43,7 @@
     <Compile Include="Generator\ITikzGroupElement.cs" />
     <Compile Include="Generator\Elements\TikzPlot.cs" />
     <Compile Include="Generator\Elements\TikzPlot3.cs" />
+    <Compile Include="Generator\TikhzFormatUtility.cs" />
     <Compile Include="Generator\TikzBinderExtensions.cs" />
     <Compile Include="ILN2Tikz.cs" />
     <Compile Include="Generator\ITikzElement.cs" />

@@ -260,10 +260,12 @@ namespace ILN2Tikz.Generator.Elements
             if (plotCube == null)
                 return;
 
+            // TODO: Font: Family, Size, Bold/Italic, Color
+
             // Global
             var title = group.First<ILTitle>();
             Title = title?.Label?.Text ?? String.Empty;
-            Size = new Rectangle(0, 0, 150, 100); // TODO: Aspect ratio
+            Size = new Rectangle(0, 0, 100, 100); // Default size: 100 x 100 mm
             TwoDMode = plotCube.TwoDMode;
             if (!TwoDMode)
             {
@@ -319,6 +321,22 @@ namespace ILN2Tikz.Generator.Elements
             ZMinorTicks = false;
             ZMajorGrid = plotCube.Axes.ZAxis.GridMajor.Visible;
             ZMinorGrid = plotCube.Axes.ZAxis.GridMinor.Visible;
+
+            // Major Grid (NOTE: Tikz doesn't support per-axis grid styles, use X axis as template)
+            MajorGridColor = plotCube.Axes.XAxis.GridMajor.Color ?? Color.FromArgb(230, 230, 230);
+            Globals.Colors.Add(MajorGridColor);
+            MajorGridStyle = plotCube.Axes.XAxis.GridMajor.DashStyle;
+            MajorGridWidth = plotCube.Axes.XAxis.GridMajor.Width;
+            // Push style to PGFPlotOptions (NOTE: grid style is set globally)
+            Globals.PGFPlotOptions.SetMajorGridStyle(MajorGridColor, MajorGridStyle, MajorGridWidth);
+
+            // Minor Grid (NOTE: Tikz doesn't support per-axis grid styles, use X axis as template)
+            MinorGridColor = plotCube.Axes.XAxis.GridMinor.Color ?? Color.FromArgb(230, 230, 230);
+            Globals.Colors.Add(MinorGridColor);
+            MinorGridStyle = plotCube.Axes.XAxis.GridMinor.DashStyle;
+            MinorGridWidth = plotCube.Axes.XAxis.GridMinor.Width;
+            // Push style to PGFPlotOptions (NOTE: grid style is set globally)
+            Globals.PGFPlotOptions.SetMinorGridStyle(MinorGridColor, MinorGridStyle, MinorGridWidth);
 
             // Legend
             var legend = plotCube.First<ILLegend>();
@@ -483,6 +501,26 @@ namespace ILN2Tikz.Generator.Elements
         public bool ZMajorGrid { get; set; }
 
         public bool ZMinorGrid { get; set; }
+
+        #endregion
+
+        #region MajorGrid
+
+        public Color MajorGridColor { get; set; }
+
+        public DashStyle MajorGridStyle { get; set; }
+
+        public int MajorGridWidth { get; set; }
+
+        #endregion
+
+        #region MinorGrid
+
+        public Color MinorGridColor { get; set; }
+
+        public DashStyle MinorGridStyle { get; set; }
+
+        public int MinorGridWidth { get; set; }
 
         #endregion
 
