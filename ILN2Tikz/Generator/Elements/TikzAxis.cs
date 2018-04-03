@@ -45,8 +45,8 @@ namespace ILN2Tikz.Generator.Elements
             {
                 #region Global
 
-                yield return $"  width={Size.Width}mm,";
-                yield return $"  height={Size.Height}mm,";
+                yield return $"  width={globals.Size.Width}mm,";
+                yield return $"  height={globals.Size.Height}mm,";
 
                 if (!String.IsNullOrEmpty(Title))
                     yield return $"  title='{{{Title}}},";
@@ -268,7 +268,6 @@ namespace ILN2Tikz.Generator.Elements
             // Global
             var title = group.First<ILTitle>();
             Title = title?.Label?.Text ?? String.Empty;
-            Size = new Rectangle(0, 0, 100, 100); // Default size: 100 x 100 mm
             TwoDMode = plotCube.TwoDMode;
             if (!TwoDMode)
             {
@@ -368,8 +367,6 @@ namespace ILN2Tikz.Generator.Elements
         public float ViewAzimuth { get; set; }
 
         public float ViewElevation { get; set; }
-
-        public Rectangle Size { get; set; }
 
         public bool TwoDMode { get; set; }
 
