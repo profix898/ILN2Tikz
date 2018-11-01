@@ -10,15 +10,15 @@ namespace ILN2Tikz.Generator.Elements
     {
         private Globals globals;
 
-        public TikzPicture(Size size = default(Size))
+        public TikzPicture(Size canvasSize = default(Size))
         {
-            if (size.Width == 0 || size.Height == 0)
-                size = new Size(100, 100);
+            if (canvasSize.Width == 0 || canvasSize.Height == 0)
+                canvasSize = new Size(100, 100); // Default size
 
-            Size = size;
+            CanvasSize = canvasSize;
         }
 
-        public Size Size { get; }
+        public Size CanvasSize { get; }
 
         #region Implementation of ITikzElement
 
@@ -54,17 +54,17 @@ namespace ILN2Tikz.Generator.Elements
             get { return @"\end{tikzpicture}"; }
         }
 
-        public override void Bind(ILGroup group, Globals globals)
+        public override void Bind(Group group, Globals globals)
         {
             this.globals = globals;
-            globals.Size = Size; // Set size of canvas
+            globals.CanvasSize = CanvasSize;
 
-            var scene = group as ILScene;
+            var scene = group as Scene;
             if (scene == null)
                 return;
 
-            // NOTE: Only ILPlotCube is supported for now
-            this.BindGroup<TikzAxis>(scene.First<ILPlotCube>(), globals);
+            // NOTE: Only PlotCube is supported for now
+            this.BindGroup<TikzAxis>(scene.First<PlotCube>(), globals);
         }
 
         #endregion

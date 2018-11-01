@@ -10,20 +10,20 @@ namespace ILN2Tikz
 {
     public static class ILN2TikzExport
     {
-        public static string ExportString(ILScene scene, Size size = default(Size))
+        public static string ExportString(Scene scene, Size canvasSize = default(Size))
         {
             if (scene == null)
                 throw new ArgumentNullException(nameof(scene));
 
             using (var stringWriter = new StringWriter())
             {
-                Export(scene, stringWriter, size);
+                Export(scene, stringWriter, canvasSize);
 
                 return stringWriter.ToString();
             }
         }
 
-        public static void ExportFile(ILScene scene, string filePath, Size size = default(Size))
+        public static void ExportFile(Scene scene, string filePath, Size canvasSize = default(Size))
         {
             if (scene == null)
                 throw new ArgumentNullException(nameof(scene));
@@ -32,33 +32,33 @@ namespace ILN2Tikz
 
             using (var streamWriter = new StreamWriter(filePath))
             {
-                Export(scene, streamWriter, size);
+                Export(scene, streamWriter, canvasSize);
 
                 streamWriter.Flush();
             }
         }
 
-        public static void Export(ILScene scene, TextWriter writer, Size size = default(Size))
+        public static void Export(Scene scene, TextWriter writer, Size canvasSize = default(Size))
         {
             if (scene == null)
                 throw new ArgumentNullException(nameof(scene));
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
 
-            // Obtain TIKZ picture from ILScene
-            var tikzPicture = Bind(scene, size);
+            // Obtain TIKZ picture from Scene
+            var tikzPicture = Bind(scene, canvasSize);
 
             // Write to TextWriter
             var tikzWriter = new TikzWriter(writer);
             tikzWriter.Write(tikzPicture);
         }
 
-        public static TikzPicture Bind(ILScene scene, Size size = default(Size))
+        public static TikzPicture Bind(Scene scene, Size canvasSize = default(Size))
         {
             if (scene == null)
                 throw new ArgumentNullException(nameof(scene));
 
-            var tikzPicture = new TikzPicture(size);
+            var tikzPicture = new TikzPicture(canvasSize);
             tikzPicture.Bind(scene, new Globals());
 
             return tikzPicture;

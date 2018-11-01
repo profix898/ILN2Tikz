@@ -33,7 +33,7 @@
             this.btnExportText = new System.Windows.Forms.Button();
             this.btnExportFile = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ilPanel = new ILNumerics.Drawing.ILPanel();
+            this.ilPanel = new ILNumerics.Drawing.Panel();
             this.textBoxTikz = new System.Windows.Forms.TextBox();
             this.comboBoxScene = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -112,7 +112,7 @@
             // ilPanel
             // 
             this.ilPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ilPanel.Driver = ILNumerics.Drawing.RendererTypes.OpenGL;
+            this.ilPanel.RendererType = ILNumerics.Drawing.RendererTypes.OpenGL;
             this.ilPanel.Editor = null;
             this.ilPanel.Location = new System.Drawing.Point(0, 0);
             this.ilPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
@@ -174,7 +174,7 @@
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Button btnExportFile;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private ILNumerics.Drawing.ILPanel ilPanel;
+        private ILNumerics.Drawing.Panel ilPanel;
         private System.Windows.Forms.TextBox textBoxTikz;
         private System.Windows.Forms.Button btnExportText;
         private System.Windows.Forms.ComboBox comboBoxScene;
