@@ -6,6 +6,6 @@ namespace ILN2Tikz.Generator
 {
     public interface ITikzGroupElement : ITikzElement, ICollection<ITikzElement>
     {
-        void Bind(ILGroup group, Globals globals);
+        void Bind(Group group, Globals globals);
     }
 }

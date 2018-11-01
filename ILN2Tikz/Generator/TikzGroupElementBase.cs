@@ -38,7 +38,7 @@ namespace ILN2Tikz.Generator
 
         public abstract string PostTag { get; }
 
-        public virtual void Bind(ILNode node, Globals globals)
+        public virtual void Bind(Node node, Globals globals)
         {
             // Not needed for a group element
         }
@@ -47,7 +47,7 @@ namespace ILN2Tikz.Generator
 
         #region Implementation of ITikzGroupElement
 
-        public abstract void Bind(ILGroup @group, Globals globals);
+        public abstract void Bind(Group group, Globals globals);
 
         #endregion
 
