@@ -64,7 +64,7 @@ namespace ILN2Tikz.Generator.Global
             get { return ""; }
         }
 
-        public void Bind(ILNode node, Globals globals)
+        public void Bind(Node node, Globals globals)
         {
             // NOTE: Don't bind automatically
             throw new NotSupportedException();

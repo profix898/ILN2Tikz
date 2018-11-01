@@ -18,7 +18,7 @@ namespace ILN2Tikz.Generator
 
         #region Binding
         
-        void Bind(ILNode node, Globals globals);
+        void Bind(Node node, Globals globals);
 
         #endregion
     }

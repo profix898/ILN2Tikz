@@ -45,8 +45,8 @@ namespace ILN2Tikz.Generator.Elements
             {
                 #region Global
 
-                yield return $"  width={globals.Size.Width}mm,";
-                yield return $"  height={globals.Size.Height}mm,";
+                yield return $"  width={globals.CanvasSize.Width}mm,";
+                yield return $"  height={globals.CanvasSize.Height}mm,";
 
                 if (!String.IsNullOrEmpty(Title))
                     yield return $"  title='{{{TikzTextUtility.EscapeText(Title)}}},";
@@ -256,17 +256,17 @@ namespace ILN2Tikz.Generator.Elements
 
         #region Implementation of ITikzGroupElement
 
-        public override void Bind(ILGroup group, Globals globals)
+        public override void Bind(Group group, Globals globals)
         {
             this.globals = globals;
 
-            if (!(group is ILPlotCube plotCube))
+            if (!(group is PlotCube plotCube))
                 return;
 
             // TODO: Font: Family, Size, Bold/Italic, Color
 
             // Global
-            var title = group.First<ILTitle>();
+            var title = group.First<Title>();
             Title = title?.Label?.Text ?? String.Empty;
             TwoDMode = plotCube.TwoDMode;
             if (!TwoDMode)
@@ -341,7 +341,7 @@ namespace ILN2Tikz.Generator.Elements
             globals.PGFPlotOptions.SetMinorGridStyle(MinorGridColor, MinorGridStyle, MinorGridWidth);
 
             // Legend
-            var legend = plotCube.First<ILLegend>();
+            var legend = plotCube.First<Legend>();
             if (legend != null)
             {
                 LegendVisible = legend.Visible;
@@ -352,7 +352,7 @@ namespace ILN2Tikz.Generator.Elements
                 globals.Colors.Add(LegendBackgroundColor);
             }
             
-            // Map plots (ILLinePlot, ILSurface, etc.)
+            // Map plots (LinePlot, Surface, etc.)
             this.BindPlots(plotCube, globals);
         }
 

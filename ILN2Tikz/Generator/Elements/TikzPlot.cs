@@ -6,13 +6,14 @@ using ILN2Tikz.Generator.Global;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
+using Globals = ILN2Tikz.Generator.Global.Globals;
 
 namespace ILN2Tikz.Generator.Elements
 {
     public class TikzPlot : ITikzElement
     {
         private Globals globals;
-        private ILLinePlot linePlot;
+        private LinePlot linePlot;
 
         #region Implementation of ITikzElement
 
@@ -50,11 +51,11 @@ namespace ILN2Tikz.Generator.Elements
             }
         }
 
-        public void Bind(ILNode node, Globals globals)
+        public void Bind(Node node, Globals globals)
         {
             this.globals = globals;
 
-            if (!(node is ILLinePlot linePlot))
+            if (!(node is LinePlot linePlot))
                 return;
 
             this.linePlot = linePlot; // Reference for data table
@@ -72,9 +73,9 @@ namespace ILN2Tikz.Generator.Elements
             MarkerSize = Math.Max(linePlot.Marker.Size / 2, 1);
 
             // LegendEntry
-            var legend = linePlot.FirstUp<ILPlotCube>().First<ILLegend>();
+            var legend = linePlot.FirstUp<PlotCube>().First<Legend>();
             if (legend != null)
-                LegendItemText = legend.Find<ILLegendItem>().FirstOrDefault(legendItem => legendItem.ProviderID == linePlot.ID)?.Text;
+                LegendItemText = legend.Find<LegendItem>().FirstOrDefault(legendItem => legendItem.ProviderID == linePlot.ID)?.Text;
         }
 
         #endregion
@@ -111,16 +112,16 @@ namespace ILN2Tikz.Generator.Elements
 
         #region Helpers
 
-        private static IEnumerable<string> FormatDataTable(ILLinePlot linePlot)
+        private static IEnumerable<string> FormatDataTable(LinePlot linePlot)
         {
-            var scaleModes = linePlot.FirstUp<ILPlotCubeDataGroup>().ScaleModes;
+            var scaleModes = linePlot.FirstUp<PlotCubeDataGroup>().ScaleModes;
             
             yield return "  table[row sep=crcr]{";
 
-            ILArray<float> positions = linePlot.Positions; // 3 x n
+            Array<float> positions = linePlot.Positions; // 3 x n
             for (var i = 0; i < positions.S[1]; i++)
             {
-                ILArray<float> xyz = positions[ILMath.full, i];
+                Array<float> xyz = positions[ILNumerics.Globals.full, i];
                 var x = (float) xyz[0];
                 if (scaleModes.XAxisScale == AxisScale.Logarithmic)
                     x = (float) Math.Pow(10.0, x);
