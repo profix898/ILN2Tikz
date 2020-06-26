@@ -59,7 +59,7 @@
   <ItemGroup>
     <Reference Include="ILNEditor, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ILN2Tikz\bin\Release\ILNEditor.dll</HintPath>
+      <HintPath>..\ILN2Tikz\ILNEditor.dll</HintPath>
     </Reference>
     <Reference Include="ILNumerics.Computing, Version=5.2.0.0, Culture=neutral, PublicKeyToken=8d9bf50ef854734d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ILN2Tikz\ILN2Tikz.csproj">
-      <Project>{81b77b77-f4f1-4622-9328-86a014910196}</Project>
+      <Project>{81B77B77-F4F1-4622-9328-86A014910196}</Project>
       <Name>ILN2Tikz</Name>
     </ProjectReference>
   </ItemGroup>
