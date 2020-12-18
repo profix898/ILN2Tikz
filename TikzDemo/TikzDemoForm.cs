@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ILN2Tikz;
-using ILNEditor;
 using ILNumerics;
 using ILNumerics.Drawing;
 using ILNumerics.Drawing.Plotting;
@@ -91,8 +90,6 @@ namespace TikzDemo
 
             ilPanel.Configure();
             ilPanel.Refresh();
-
-            PanelEditor.AttachTo(ilPanel);
         }
 
         private void btnExportFile_Click(object sender, EventArgs e)
