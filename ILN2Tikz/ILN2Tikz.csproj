@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Version>1.3.0</Version>
-    <Copyright>Copyright © 2017-2020 Thilo Viereck</Copyright>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <Version>1.4.0</Version>
+    <Copyright>Copyright © 2017-2021 Thilo Viereck</Copyright>
     <RepositoryUrl>https://github.com/profix898/ILN2Tikz</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Authors>Thilo Viereck</Authors>
@@ -12,18 +12,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ILNumerics_deploy\ILNHelper.cs" Condition="$(EnableDefaultCompileItems) != 'true'" />
+    <PackageReference Include="ILNumerics.Computing" Version="6.0.23-alpha23" />
+    <PackageReference Include="ILNumerics.Core" Version="6.0.23-alpha23" />
+    <PackageReference Include="ILNumerics.Drawing" Version="6.0.23-alpha23" />
+    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.23-alpha23" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="EMG.External.ILNumerics" Version="5.5.7504" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ILNumerics_deploy\ILNImports1.targets" />
-    <None Include="ILNumerics_deploy\ILNImports2.targets" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ILNumerics_deploy\ilnumerics.lic" />
-  </ItemGroup>
-  <Import Project="ILNumerics_deploy\ILNImports1.targets" Condition="$(ILNLicCompile) != 'true'" />
-  <Import Project="ILNumerics_deploy\ILNImports2.targets" Condition="$(ILNLicCompile) == 'true'" />
 </Project>
