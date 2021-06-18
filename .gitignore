@@ -1,9 +1,5 @@
-# Explicit folders (ILN2Tikz Project)
-.vs
-
-# ILNumerics distributables
-ILNumerics.*
-OpenTK.*
+# Explicit folders (ILN2TIKZ Project)
+ILNumerics_deploy
 
 # User-specific files
 *.user
@@ -15,7 +11,15 @@ OpenTK.*
 # Intermediates and Binaries
 [Bb]in
 [Oo]bj
-/packages
+
+# IDE
+.vs/
+*.ide/
+*.idea/
+*.user
+*.chw
+*.bak
+*.suo
 
 # Build results
 [Dd]ebug/
