@@ -71,7 +71,7 @@ namespace TikzDemo
                 plotCube.ScaleModes.YAxisScale = AxisScale.Logarithmic;
                 plotCube.Axes.XAxis.Label.Text = "Voltage / V_{rms}";
 
-                plotCube.Add(new Legend("one", "two"));
+                //plotCube.Add(new Legend("one", "two"));
             }
 
             if (comboBoxScene.SelectedIndex == 2) // Surface
@@ -103,12 +103,14 @@ namespace TikzDemo
                 return;
 
             var size = new Size(120, 120);
-            ILN2TikzExport.ExportFile(ilPanel.Scene, saveFileDialog.FileName, size);
+            var currentScene = ilPanel.GetCurrentScene() ?? ilPanel.Scene;
+            ILN2TikzExport.ExportFile(currentScene, saveFileDialog.FileName, size);
         }
 
         private void btnExportText_Click(object sender, EventArgs e)
         {
-            textBoxTikz.Text = ILN2TikzExport.ExportString(ilPanel.Scene);
+            var currentScene = ilPanel.GetCurrentScene() ?? ilPanel.Scene;
+            textBoxTikz.Text = ILN2TikzExport.ExportString(currentScene);
         }
     }
 }

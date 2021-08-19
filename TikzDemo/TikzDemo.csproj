@@ -6,10 +6,9 @@
     <StartupObject>TikzDemo.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ILNumerics.Computing" Version="6.0.68-beta04" />
-    <PackageReference Include="ILNumerics.Core" Version="6.0.68-beta04" />
-    <PackageReference Include="ILNumerics.Drawing" Version="6.0.68-beta04" />
-    <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.68-beta04" />
+    <PackageReference Include="ILNumerics.Computing" Version="6.0.86" />
+    <PackageReference Include="ILNumerics.Drawing" Version="6.0.86" />
+    <PackageReference Include="ILNumerics.Drawing.Platforms" Version="6.0.86" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ILN2Tikz\ILN2Tikz.csproj" />
