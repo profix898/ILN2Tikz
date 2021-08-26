@@ -71,7 +71,7 @@ namespace TikzDemo
                 plotCube.ScaleModes.YAxisScale = AxisScale.Logarithmic;
                 plotCube.Axes.XAxis.Label.Text = "Voltage / V_{rms}";
 
-                //plotCube.Add(new Legend("one", "two"));
+                plotCube.Add(new Legend("one", "two"));
             }
 
             if (comboBoxScene.SelectedIndex == 2) // Surface
