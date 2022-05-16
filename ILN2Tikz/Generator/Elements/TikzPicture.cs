@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
-using ILNumerics.Drawing.Plotting;
+using Size = System.Drawing.Size;
 
 namespace ILN2Tikz.Generator.Elements
 {
     public class TikzPicture : TikzGroupElementBase
     {
-        private Globals globals;
+        private TikzGlobals globals;
 
         public TikzPicture(Size canvasSize = default(Size))
         {
@@ -54,7 +53,7 @@ namespace ILN2Tikz.Generator.Elements
             get { return @"\end{tikzpicture}"; }
         }
 
-        public override void Bind(Group group, Globals globals)
+        public override void Bind(Group group, TikzGlobals globals)
         {
             this.globals = globals;
             globals.CanvasSize = CanvasSize;

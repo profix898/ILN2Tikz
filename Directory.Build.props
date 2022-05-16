@@ -1,0 +1,25 @@
+<Project>
+	<PropertyGroup>
+		<LangVersion>10.0</LangVersion>
+		<ImplicitUsings>false</ImplicitUsings>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Version>1.8.0</Version>
+	    <FileVersion>$(Version)</FileVersion>
+	    <AssemblyVersion>$(Version)</AssemblyVersion>
+	    <Copyright>Copyright © 2017-2022 Thilo Viereck</Copyright>
+	    <RepositoryUrl>https://github.com/profix898/ILN2Tikz</RepositoryUrl>
+	    <RepositoryType>git</RepositoryType>
+	    <Authors>Thilo Viereck</Authors>
+	    <Company />
+	    <Description>Export functionality for ILNumerics (http://ilnumerics.net/) scene graphs and plot cubes to Tikz (LaTeX graphics package)</Description>
+	    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+	<PropertyGroup>
+    	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<!--<IncludeSymbols>true</IncludeSymbols>
+    	<SymbolPackageFormat>snupkg</SymbolPackageFormat>-->
+		<PackageOutputPath>./../</PackageOutputPath>
+	</PropertyGroup>
+</Project>

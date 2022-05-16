@@ -5,13 +5,12 @@ using System.Globalization;
 using System.Linq;
 using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
-using ILNumerics.Drawing.Plotting;
 
 namespace ILN2Tikz.Generator.Elements
 {
     public class TikzAxis : TikzGroupElementBase, ITikzGroupElement
     {
-        private Globals globals;
+        private TikzGlobals globals;
 
         private float[] xTicks;
         private float[] yTicks;
@@ -256,7 +255,7 @@ namespace ILN2Tikz.Generator.Elements
 
         #region Implementation of ITikzGroupElement
 
-        public override void Bind(Group group, Globals globals)
+        public override void Bind(Group group, TikzGlobals globals)
         {
             this.globals = globals;
 
@@ -351,7 +350,7 @@ namespace ILN2Tikz.Generator.Elements
                 LegendBackgroundColor = legend.Background.Color ?? Color.White;
                 globals.Colors.Add(LegendBackgroundColor);
             }
-            
+
             // Map plots (LinePlot, Surface, etc.)
             this.BindPlots(plotCube, globals);
         }

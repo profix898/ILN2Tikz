@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Drawing;
 using ILNumerics.Drawing;
+using static ILN2Tikz.Generator.TikzColormapUtility;
 
 namespace ILN2Tikz.Generator.Global
 {
     public sealed class PGFPlotOptions : List<string>, ITikzElement
     {
-        private readonly Globals globals;
+        private readonly TikzGlobals globals;
 
-        public PGFPlotOptions(Globals globals)
+        public PGFPlotOptions(TikzGlobals globals)
         {
             this.globals = globals;
 
             Add("compat=1.13"); // Minimum version
             Add("set layers"); // Sort layers
             Add("major grid style={solid,very thin,white!80!black}"); // Default major grid style
+            Add("minor grid style={dashed,very thin,white!90!black}"); // Default minor grid style
             Add("minor grid style={dashed,very thin,white!90!black}"); // Default minor grid style
         }
 
@@ -35,6 +37,12 @@ namespace ILN2Tikz.Generator.Global
         {
             // Replace default minor grid style
             this[3] = $"minor grid style={{{TikzFormatUtility.FormatLine(globals, gridColor, gridStyle, 0.5f * gridWidth)}}}";
+        }
+
+        public void AddColormap(Colormap colormap)
+        {
+            // Global colormap
+            Add(FormatColormap(colormap));
         }
 
         #region Implementation of ITikzElement
@@ -64,7 +72,7 @@ namespace ILN2Tikz.Generator.Global
             get { return ""; }
         }
 
-        public void Bind(Node node, Globals globals)
+        public void Bind(Node node, TikzGlobals globals)
         {
             // NOTE: Don't bind automatically
             throw new NotSupportedException();
