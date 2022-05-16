@@ -94,7 +94,7 @@ namespace ILN2Tikz.Generator.Global
 
         public string PostTag => "";
 
-        public void Bind(Node node, Globals globals)
+        public void Bind(Node node, TikzGlobals globals)
         {
             // NOTE: Don't bind automatically
             throw new NotSupportedException();

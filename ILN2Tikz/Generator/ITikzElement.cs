@@ -18,7 +18,7 @@ namespace ILN2Tikz.Generator
 
         #region Binding
         
-        void Bind(Node node, Globals globals);
+        void Bind(Node node, TikzGlobals globals);
 
         #endregion
     }

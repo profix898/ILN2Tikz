@@ -9,12 +9,12 @@ namespace ILN2Tikz.Generator
     {
         #region Line
 
-        internal static string FormatLine(Globals globals, Color color, DashStyle style, float width)
+        internal static string FormatLine(TikzGlobals globals, Color color, DashStyle style, float width)
         {
             return FormattableString.Invariant($"color={globals.Colors.GetColorName(color)},{FormatDashStyle(style)},line width={width:F1}pt");
         }
 
-        internal static string FormatLine(Globals globals, Color color, DashStyle style, int width)
+        internal static string FormatLine(TikzGlobals globals, Color color, DashStyle style, int width)
         {
             return FormattableString.Invariant($"color={globals.Colors.GetColorName(color)},{FormatDashStyle(style)},line width={width}pt");
         }
@@ -40,7 +40,7 @@ namespace ILN2Tikz.Generator
 
         #region Marker
 
-        internal static string FormatMarker(Globals globals, Color color, MarkerStyle style, int size)
+        internal static string FormatMarker(TikzGlobals globals, Color color, MarkerStyle style, int size)
         {
             if (style == MarkerStyle.None)
                 return "";

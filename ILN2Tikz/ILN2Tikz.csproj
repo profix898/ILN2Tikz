@@ -1,21 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Version>1.7.0</Version>
-    <FileVersion>$(Version)</FileVersion>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Copyright>Copyright © 2017-2021 Thilo Viereck</Copyright>
-    <RepositoryUrl>https://github.com/profix898/ILN2Tikz</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <Authors>Thilo Viereck</Authors>
-    <Company />
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Export functionality for ILNumerics (http://ilnumerics.net/) scene graphs and plot cubes to Tikz (LaTeX graphics package)</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageOutputPath>./../</PackageOutputPath>
+    <LangVersion>10</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ILNumerics.Computing" Version="6.0.124" />
-    <PackageReference Include="ILNumerics.Drawing" Version="6.0.124" />
+    <PackageReference Include="ILNumerics.Computing" Version="6.0.127" />
+    <PackageReference Include="ILNumerics.Drawing" Version="6.0.127" />
+    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.127" />
   </ItemGroup>
 </Project>

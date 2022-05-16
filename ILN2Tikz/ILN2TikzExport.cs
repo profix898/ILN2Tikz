@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using ILN2Tikz.Generator;
 using ILN2Tikz.Generator.Elements;
 using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
+using Size = System.Drawing.Size;
 
 namespace ILN2Tikz
 {
@@ -58,8 +58,10 @@ namespace ILN2Tikz
             if (scene == null)
                 throw new ArgumentNullException(nameof(scene));
 
+            scene.Configure();
+
             var tikzPicture = new TikzPicture(canvasSize);
-            tikzPicture.Bind(scene, new Globals());
+            tikzPicture.Bind(scene, new TikzGlobals());
 
             return tikzPicture;
         }

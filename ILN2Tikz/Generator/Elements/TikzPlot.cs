@@ -3,32 +3,34 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ILN2Tikz.Generator.Global;
-using ILNumerics;
 using ILNumerics.Drawing;
-using ILNumerics.Drawing.Plotting;
-using Globals = ILN2Tikz.Generator.Global.Globals;
+using static ILN2Tikz.Generator.TikzFormatUtility;
 
 namespace ILN2Tikz.Generator.Elements
 {
     public class TikzPlot : ITikzElement
     {
-        private Globals globals;
-        private LinePlot linePlot;
+        protected TikzGlobals globals;
+        protected LinePlot linePlot;
 
         #region Implementation of ITikzElement
 
-        public string PreTag
+        public virtual string PreTag
         {
             get
             {
-                if (MarkerStyle == MarkerStyle.None)
-                    return $"\\addplot[{TikzFormatUtility.FormatLine(globals, LineColor, LineStyle, LineWidth)}]";
+                var lineStyle = FormatLine(globals, LineColor, LineStyle, LineWidth);
 
-                return $"\\addplot[{TikzFormatUtility.FormatLine(globals, LineColor, LineStyle, LineWidth)},{TikzFormatUtility.FormatMarker(globals, MarkerColor, MarkerStyle, MarkerSize)}]";
+                if (MarkerStyle == MarkerStyle.None)
+                    return $"\\addplot[{lineStyle}]";
+
+                var markerStyle = FormatMarker(globals, MarkerColor, MarkerStyle, MarkerSize);
+
+                return $"\\addplot[{lineStyle},{markerStyle}";
             }
         }
 
-        public IEnumerable<string> Content
+        public virtual IEnumerable<string> Content
         {
             get
             {
@@ -40,7 +42,7 @@ namespace ILN2Tikz.Generator.Elements
             }
         }
 
-        public string PostTag
+        public virtual string PostTag
         {
             get
             {
@@ -51,7 +53,7 @@ namespace ILN2Tikz.Generator.Elements
             }
         }
 
-        public void Bind(Node node, Globals globals)
+        public virtual void Bind(Node node, TikzGlobals globals)
         {
             this.globals = globals;
 
@@ -115,13 +117,14 @@ namespace ILN2Tikz.Generator.Elements
         private static IEnumerable<string> FormatDataTable(LinePlot linePlot)
         {
             var scaleModes = linePlot.FirstUp<PlotCubeDataGroup>().ScaleModes;
-            
-            yield return "  table[row sep=crcr]{";
+
+            yield return "  table[x=x, y=y, row sep=crcr]{";
+            yield return "  x	y\\\\"; // Header
 
             Array<float> positions = linePlot.Positions; // 3 x n
             for (var i = 0; i < positions.S[1]; i++)
             {
-                Array<float> xyz = positions[ILNumerics.Globals.full, i];
+                Array<float> xyz = positions[full, i];
                 var x = (float) xyz[0];
                 if (scaleModes.XAxisScale == AxisScale.Logarithmic)
                     x = (float) Math.Pow(10.0, x);

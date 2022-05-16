@@ -1,10 +1,10 @@
-﻿using System.Drawing;
+﻿using Size = System.Drawing.Size;
 
 namespace ILN2Tikz.Generator.Global
 {
-    public sealed class Globals
+    public sealed class TikzGlobals
     {
-        public Globals()
+        public TikzGlobals()
         {
             CanvasSize = new Size(100, 100);
             PGFPlotOptions = new PGFPlotOptions(this);

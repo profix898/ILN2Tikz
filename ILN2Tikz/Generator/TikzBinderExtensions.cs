@@ -1,7 +1,7 @@
-﻿using ILN2Tikz.Generator.Elements;
+﻿using System.Linq;
+using ILN2Tikz.Generator.Elements;
 using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
-using ILNumerics.Drawing.Plotting;
 
 namespace ILN2Tikz.Generator
 {
@@ -9,7 +9,7 @@ namespace ILN2Tikz.Generator
     {
         #region Generic
 
-        public static void BindElement<TTikz>(this ITikzGroupElement tikzGroup, Node node, Globals globals)
+        public static void BindElement<TTikz>(this ITikzGroupElement tikzGroup, Node node, TikzGlobals globals)
             where TTikz : ITikzElement, new()
         {
             if (node == null)
@@ -21,7 +21,7 @@ namespace ILN2Tikz.Generator
             tikzGroup.Add(tikz);
         }
 
-        public static void BindGroup<TTikzGroup>(this ITikzGroupElement tikzGroup, Group group, Globals globals)
+        public static void BindGroup<TTikzGroup>(this ITikzGroupElement tikzGroup, Group group, TikzGlobals globals)
             where TTikzGroup : ITikzGroupElement, new()
         {
             if (group == null)
@@ -37,15 +37,28 @@ namespace ILN2Tikz.Generator
 
         #region Plots
 
-        public static void BindPlots(this ITikzGroupElement tikzGroup, Group group, Globals globals)
+        public static void BindPlots(this ITikzGroupElement tikzGroup, Group group, TikzGlobals globals)
         {
-            // LinePlots
-            foreach (var linePlot in group.Find<LinePlot>())
+            // ErrorBarPlot
+            var errorBarPlots = group.Find<ErrorBarPlot>().ToArray();
+            foreach (var errorBarPlot in errorBarPlots)
+                tikzGroup.BindElement<TikzPlotPlus>(errorBarPlot, globals);
+
+            // LinePlot
+            var linePlots = group.Find<LinePlot>().ToArray();
+            linePlots = linePlots.Where(lp => lp.Parent is not ErrorBarPlot).ToArray(); // Exclude LinePlots which are a direct child of ErrorBarPlot
+            foreach (var linePlot in linePlots)
                 tikzGroup.BindElement<TikzPlot>(linePlot, globals);
 
-            // SurfacePlots
-            foreach (var surface in group.Find<Surface>())
+            // Surface
+            var surfaces = group.Find<Surface>().ToArray();
+            foreach (var surface in surfaces)
                 tikzGroup.BindElement<TikzPlot3>(surface, globals);
+
+            // FastSurface
+            var fastSurfaces = group.Find<FastSurface>().ToArray();
+            foreach (var fastSurface in fastSurfaces)
+                tikzGroup.BindElement<TikzPlot3>(fastSurface, globals);
         }
 
         #endregion
