@@ -13,7 +13,7 @@
 	    <RepositoryType>git</RepositoryType>
 	    <Authors>Thilo Viereck</Authors>
 	    <Company />
-	    <Description>Export functionality for ILNumerics (http://ilnumerics.net/) scene graphs and plot cubes to Tikz (LaTeX graphics package)</Description>
+	    <Description>Export functionality for ILNumerics (http://ilnumerics.net/) scene graphs and plot cubes to Tikz/PGFPlots (LaTeX graphics package)</Description>
 	    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 	<PropertyGroup>
