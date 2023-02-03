@@ -8,4 +8,7 @@
     <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.148" />
     <PackageReference Include="AnyAscii" Version="0.3.1" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="./../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
