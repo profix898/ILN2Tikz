@@ -20,7 +20,7 @@ Both variants take an optional argument ```Size canvasSize``` (defaults to 120x1
 ILN2TikzExport.ExportFile(scene, filePath, new Size(mmWidth, mmHeight));
 ```
 
-As of today (May 2022) the following plot types are supported: _LinePlot_, _ErrorBarPlot (y-error only)_, _Surface_, _FastSurface_.
+As of today (Jan 2023) the following plot types are supported: _LinePlot_, _ErrorBarPlot (y-error only)_, _Surface_, _FastSurface_.
 
 ### License
 ILN2Tikz is licensed under the terms of the MIT license (<http://opensource.org/licenses/MIT>, see LICENSE.txt).

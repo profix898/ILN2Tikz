@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
 using static ILN2Tikz.Generator.TikzFormatUtility;
@@ -17,7 +18,7 @@ namespace ILN2Tikz.Generator.Elements
             get
             {
                 var lineStyle = FormatLine(globals, LineColor, LineStyle, LineWidth);
-                var errorBars = FormatErrorBars();
+                var errorBars = FormatErrorBars(globals, ErrorBarColor, ErrorBarStyle, ErrorBarWidth);
 
                 if (MarkerStyle == MarkerStyle.None)
                     return $"\\addplot+[{lineStyle},{errorBars}]";
@@ -47,6 +48,12 @@ namespace ILN2Tikz.Generator.Elements
             if (!(node is ErrorBarPlot errorBarPlot))
                 return;
 
+            // ErrorBar
+            ErrorBarColor = errorBarPlot.ErrorBar.Color ?? Color.Black;
+            globals.Colors.Add(ErrorBarColor);
+            ErrorBarStyle = errorBarPlot.ErrorBar.DashStyle;
+            ErrorBarWidth = errorBarPlot.ErrorBar.Width;
+
             this.errorBarPlot = errorBarPlot; // Reference for data table
             
             // Delegate LinePlot to TikzPlot
@@ -55,13 +62,21 @@ namespace ILN2Tikz.Generator.Elements
 
         #endregion
 
-        #region Helpers
+        #region Properties
 
-        private static string FormatErrorBars()
-        {
-            // TODO: Error bar style
-            return "error bars/.cd, y fixed,y dir=both, y explicit";
-        }
+        #region ErrorBar
+
+        public Color ErrorBarColor { get; set; }
+
+        public DashStyle ErrorBarStyle { get; set; }
+
+        public int ErrorBarWidth { get; set; }
+
+        #endregion
+
+        #endregion
+
+        #region Helpers
 
         private static IEnumerable<string> FormatErrorDataTable(ErrorBarPlot errorBarPlot)
         {

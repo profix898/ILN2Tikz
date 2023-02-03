@@ -84,7 +84,7 @@ namespace TikzDemo
 
                     plotCube.ScaleModes.XAxisScale = AxisScale.Logarithmic;
                     plotCube.ScaleModes.YAxisScale = AxisScale.Logarithmic;
-                    plotCube.Axes.XAxis.Label.Text = "Voltage / V_{rms}";
+                    plotCube.Axes.XAxis.Label.Text = "Voltage / µV_{rms}";
                     plotCube.Axes.YAxis.Label.Text = "Area / m^2";
 
                     plotCube.Add(new Legend("one", "two"));

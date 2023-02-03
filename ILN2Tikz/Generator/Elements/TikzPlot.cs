@@ -26,7 +26,7 @@ namespace ILN2Tikz.Generator.Elements
 
                 var markerStyle = FormatMarker(globals, MarkerColor, MarkerStyle, MarkerSize);
 
-                return $"\\addplot[{lineStyle},{markerStyle}";
+                return $"\\addplot[{lineStyle},{markerStyle}]";
             }
         }
 

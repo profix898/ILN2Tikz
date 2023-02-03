@@ -3,8 +3,9 @@
     <LangVersion>10</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ILNumerics.Computing" Version="6.0.127" />
-    <PackageReference Include="ILNumerics.Drawing" Version="6.0.127" />
-    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.127" />
+    <PackageReference Include="ILNumerics.Computing" Version="6.0.148" />
+    <PackageReference Include="ILNumerics.Drawing" Version="6.0.148" />
+    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="6.0.148" />
+    <PackageReference Include="AnyAscii" Version="0.3.1" />
   </ItemGroup>
 </Project>

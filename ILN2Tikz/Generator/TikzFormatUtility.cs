@@ -45,7 +45,7 @@ namespace ILN2Tikz.Generator
             if (style == MarkerStyle.None)
                 return "";
 
-            return $"mark={FormatMarkerStyle(style)},mark size={size},mark options={{fill={globals.Colors.GetColorName(color)}}}";
+            return $"mark={FormatMarkerStyle(style)},mark size={size},mark options={{{globals.Colors.GetColorName(color)}}}";
         }
 
         internal static string FormatMarkerStyle(MarkerStyle style)
@@ -71,14 +71,26 @@ namespace ILN2Tikz.Generator
                 case MarkerStyle.TriangleRight:
                     return "pentagon*";
                 case MarkerStyle.Plus:
-                    return "oplus*"; //return "+";
+                    return "+";
                 case MarkerStyle.Cross:
-                    return "otimes*"; //return "x";
+                    return "x";
                 case MarkerStyle.None:
                     return "";
                 default:
                     return "plus";
             }
+        }
+
+        #endregion
+
+        #region ErrorBar
+
+        internal static string FormatErrorBars(TikzGlobals globals, Color color, DashStyle style, int width)
+        {
+            var errorBarDef = "error bars/.cd, y fixed,y dir=both, y explicit";
+            var errorBarStyle = FormatLine(globals, color, style, width);
+
+            return $"{errorBarDef},error bar style={{{errorBarStyle}}}";
         }
 
         #endregion
