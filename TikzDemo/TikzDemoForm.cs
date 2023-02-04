@@ -85,7 +85,7 @@ namespace TikzDemo
                     plotCube.ScaleModes.XAxisScale = AxisScale.Logarithmic;
                     plotCube.ScaleModes.YAxisScale = AxisScale.Logarithmic;
                     plotCube.Axes.XAxis.Label.Text = "Voltage / µV_{rms}";
-                    plotCube.Axes.YAxis.Label.Text = "Area / m^2";
+                    plotCube.Axes.YAxis.Label.Text = "Area_A / m^2";
 
                     plotCube.Add(new Legend("one", "two"));
                     break;
@@ -117,6 +117,9 @@ namespace TikzDemo
                     plotCube.Add(surface);
                     plotCube.TwoDMode = false;
                     plotCube.Rotation = Matrix4.Rotation(new Vector3(1f,0.23f,1), 0.7f);
+                    plotCube.Axes.XAxis.Label.Text = "B in 10^{-3} V_{rms}";
+                    plotCube.Axes.YAxis.Label.Text = "Area_{ABC} / m^2";
+                    plotCube.Axes.ZAxis.Label.Text = "Greek α^β+μ_π";
                     break;
                 }
 
