@@ -1,5 +1,6 @@
-ILN2Tikz Export
+ILN2Tikz
 ==========
+[![Nuget](https://img.shields.io/nuget/v/ILN2Tikz?style=flat-square&logo=nuget&color=blue)](https://www.nuget.org/packages/ILN2Tikz)
 
 Export functionality for ILNumerics (http://ilnumerics.net/) scene graphs
 and plot cubes to TikZ/PGFPlots (LaTeX graphics package, see [Wikipedia](https://en.wikipedia.org/wiki/PGF/TikZ)).
