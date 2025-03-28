@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>TikzExportDemo.Program</StartupObject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ILNumerics.Computing" Version="7.1.22" />
+    <PackageReference Include="ILNumerics.Drawing" Version="7.1.22" />
+    <PackageReference Include="ILNumerics.Drawing.Platforms" Version="7.1.22" />
+    <PackageReference Include="ILNumerics.Toolboxes.Drawing2" Version="7.1.22" />
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TikzExport\TikzExport.csproj" />
+  </ItemGroup>
+</Project>

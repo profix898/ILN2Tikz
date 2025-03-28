@@ -5,11 +5,9 @@
             <Output TaskParameter="ConsoleOutput" PropertyName="GitSHA"/>
         </Exec>
 		<PropertyGroup>
-			<MinVerMinimumMajorMinor>1.12</MinVerMinimumMajorMinor>
+			<MinVerMinimumMajorMinor>7.0</MinVerMinimumMajorMinor>
 			<MinVerDefaultPreReleaseIdentifiers>dev</MinVerDefaultPreReleaseIdentifiers>
-      <MinVerTagPrefix>v</MinVerTagPrefix>
 			<MinVerBuildMetadata Condition=" '$(Configuration)' == 'Debug' ">$(GitSHA)</MinVerBuildMetadata>
-			<!-- <MinVerIgnoreHeight Condition=" '$(Configuration)' != 'Debug' ">true</MinVerIgnoreHeight> -->
       <MinVerVerbosity>normal</MinVerVerbosity>
       <MinVerTagPrefix>v</MinVerTagPrefix>
     </PropertyGroup>
@@ -18,6 +16,7 @@
 		<PropertyGroup>
 			<BuildNumber>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::Parse("2025/01/01"))).TotalDays.ToString("0"))</BuildNumber>
 			<Version>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).$(BuildNumber)-dev+$(GitSHA)</Version>
+      <Version Condition=" '$(Configuration)' == 'Release' ">$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).$(BuildNumber)</Version>
 			<PackageVersion>$(Version)</PackageVersion>
 		</PropertyGroup>
 		<Message Text="Version: $(Version)" Importance="high"/>
@@ -26,7 +25,7 @@
 	</Target>
 	<!-- Project Defaults  -->
 	<PropertyGroup>
-		<LangVersion>13.0</LangVersion>
+		<LangVersion>12.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>false</ImplicitUsings>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
@@ -34,17 +33,17 @@
 	</PropertyGroup>
 	<!-- Assembly Info -->
 	<PropertyGroup>
-		<Product>ILN2Tikz</Product>
+		<Product>ILNumerics.Community.TikzExport</Product>
 		<Description>Export functionality for ILNumerics (http://ilnumerics.net/) scene graphs and plot cubes to Tikz/PGFPlots (LaTeX graphics package)</Description>
 		<Authors>Thilo Viereck</Authors>
 		<Company></Company>
-		<Copyright>Copyright &#169; Thilo Viereck 2017-$([System.DateTime]::Now.ToString(`yyyy`))</Copyright>
+		<Copyright>Copyright &#169; Thilo Viereck &amp; ILNumerics Community 2017-$([System.DateTime]::Now.ToString(`yyyy`))</Copyright>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<!--<PackageIcon>logo.png</PackageIcon>-->
 		<PackageReadmeFile>Readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/profix898/ILN2Tikz</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/profix898/ILN2Tikz</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/ILNumericsCommunity/TikzExport</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/ILNumericsCommunity/TikzExport</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 	<!-- Packaging -->
