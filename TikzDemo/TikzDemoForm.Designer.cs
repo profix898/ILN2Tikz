@@ -117,7 +117,6 @@
             this.ilPanel.Location = new System.Drawing.Point(0, 0);
             this.ilPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ilPanel.Name = "ilPanel";
-            this.ilPanel.Rectangle = ((System.Drawing.RectangleF)(resources.GetObject("ilPanel.Rectangle")));
             this.ilPanel.ShowUIControls = false;
             this.ilPanel.Size = new System.Drawing.Size(520, 631);
             this.ilPanel.TabIndex = 1;

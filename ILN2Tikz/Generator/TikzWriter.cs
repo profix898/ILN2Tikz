@@ -1,26 +1,25 @@
 ﻿using System.IO;
 using ILN2Tikz.Generator.Elements;
 
-namespace ILN2Tikz.Generator
+namespace ILN2Tikz.Generator;
+
+public class TikzWriter
 {
-    public class TikzWriter
+    private readonly TextWriter _writer;
+
+    public TikzWriter(TextWriter writer)
     {
-        private readonly TextWriter writer;
+        this._writer = writer;
+    }
 
-        public TikzWriter(TextWriter writer)
-        {
-            this.writer = writer;
-        }
+    public void Write(TikzPicture picture)
+    {
+        _writer.WriteLine(picture.PreTag);
 
-        public void Write(TikzPicture picture)
-        {
-            writer.WriteLine(picture.PreTag);
+        // Render Content (line-by-line)
+        foreach (var contentLine in picture.Content)
+            _writer.WriteLine(contentLine);
 
-            // Render Content (line-by-line)
-            foreach (var contentLine in picture.Content)
-                writer.WriteLine(contentLine);
-
-            writer.WriteLine(picture.PostTag);
-        }
+        _writer.WriteLine(picture.PostTag);
     }
 }

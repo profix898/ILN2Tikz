@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ILN2Tikz/ILN2Tikz.csproj" />
+  <Project Path="TikzDemo/TikzDemo.csproj" />
+</Solution>

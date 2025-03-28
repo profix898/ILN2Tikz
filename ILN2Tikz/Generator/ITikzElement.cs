@@ -2,24 +2,23 @@
 using ILN2Tikz.Generator.Global;
 using ILNumerics.Drawing;
 
-namespace ILN2Tikz.Generator
+namespace ILN2Tikz.Generator;
+
+public interface ITikzElement
 {
-    public interface ITikzElement
-    {
-        #region TikzTags
+    #region TikzTags
 
-        string PreTag { get; }
+    string PreTag { get; }
 
-        IEnumerable<string> Content { get; }
+    IEnumerable<string> Content { get; }
 
-        string PostTag { get; }
+    string PostTag { get; }
 
-        #endregion
+    #endregion
 
-        #region Binding
+    #region Binding
         
-        void Bind(Node node, TikzGlobals globals);
+    void Bind(Node node, TikzGlobals globals);
 
-        #endregion
-    }
+    #endregion
 }
